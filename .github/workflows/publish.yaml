@@ -1,0 +1,44 @@
+name: .NET
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
+            6.0.x
+            7.0.x
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Publish WebFormsCore
+        uses: GerardSmit/publish-nuget@v3.1.2
+        with:
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          VERSION_FILE_PATH: Directory.Build.props
+          PROJECT_FILE_PATH: |
+            src/HttpStack/HttpStack.csproj
+            src/HttpStack.Builder/HttpStack.Builder.csproj
+            src/HttpStack.FormParser/HttpStack.FormParser.csproj
+            src/HttpStack.AspNet/HttpStack.AspNet.csproj
+            src/HttpStack.AspNetCore/HttpStack.AspNetCore.csproj
+            src/HttpStack.CefSharp/HttpStack.CefSharp.csproj
+            src/HttpStack.FastCGI/HttpStack.FastCGI.csproj
+            src/HttpStack.HttpListener/HttpStack.HttpListener.csproj
+            src/HttpStack.Owin/HttpStack.Owin.csproj
+            src/HttpStack.Katana/HttpStack.Katana.csproj
+            src/HttpStack.StaticFiles/HttpStack.StaticFiles.csproj

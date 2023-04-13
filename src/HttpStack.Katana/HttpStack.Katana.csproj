@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\HttpStack.Owin\HttpStack.Owin.csproj" />
+        <ProjectReference Include="..\HttpStack\HttpStack.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Owin" Version="4.2.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Nullable" Version="1.3.1" PrivateAssets="all" />
+    </ItemGroup>
+
+</Project>

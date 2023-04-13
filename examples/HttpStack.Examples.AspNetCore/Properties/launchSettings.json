@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "HttpStack.Examples.AspNetCore": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:8081",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

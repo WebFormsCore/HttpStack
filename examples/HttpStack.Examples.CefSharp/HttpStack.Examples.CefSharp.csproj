@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>11</LangVersion>
+        <Platforms>x64</Platforms>
+        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="CefSharp.Common.NETCore" Version="111.2.20" />
+        <PackageReference Include="CefSharp.WinForms.NETCore" Version="111.2.20" />
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.4" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\HttpStack.CefSharp\HttpStack.CefSharp.csproj" />
+      <ProjectReference Include="..\..\src\HttpStack.StaticFiles\HttpStack.StaticFiles.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <EmbeddedResource Include="wwwroot\**\*" />
+    </ItemGroup>
+
+</Project>
