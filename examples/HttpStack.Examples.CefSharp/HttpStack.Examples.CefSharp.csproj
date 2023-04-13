@@ -9,6 +9,7 @@
         <LangVersion>11</LangVersion>
         <Platforms>x64</Platforms>
         <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
     </PropertyGroup>
     
     <ItemGroup>
