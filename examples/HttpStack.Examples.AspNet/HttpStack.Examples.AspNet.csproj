@@ -1,13 +1,19 @@
 ﻿<Project Sdk="MSBuild.SDK.SystemWeb/4.0.88">
     
     <PropertyGroup>
+        <IsPackable>false</IsPackable>
         <TargetFramework>net472</TargetFramework>
         <LangVersion>11</LangVersion>
         <GeneratedBindingRedirectsAction>Overwrite</GeneratedBindingRedirectsAction>
+        <MvcBuildViews>false</MvcBuildViews>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\HttpStack.AspNet.Infrastructure\HttpStack.AspNet.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MSBuild.Microsoft.VisualStudio.Web.targets" Version="14.0.0.3" Condition="'$(MSBuildRuntimeType)' == 'Core'"/>
     </ItemGroup>
     
 </Project>
