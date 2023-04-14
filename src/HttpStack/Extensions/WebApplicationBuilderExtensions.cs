@@ -13,6 +13,11 @@ public static class WebApplicationBuilderExtensions
         });
     }
 
+    public static IHttpStackBuilder RunWhen(this IHttpStackBuilder app, Func<IHttpContext, bool> condition, Func<IHttpContext, Task> middleware)
+    {
+        return app.MapWhen(condition, b => b.Run(middleware));
+    }
+
     public static IHttpStackBuilder Use(this IHttpStackBuilder app, Func<IHttpContext, Func<Task>, Task> middleware)
     {
         return app.Use(next =>

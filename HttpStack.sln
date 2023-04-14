@@ -1,45 +1,52 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack", "src\HttpStack\HttpStack.csproj", "{AB4381D7-E5DE-4F2A-82AE-01EB2F5C2FC5}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33513.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack", "src\HttpStack\HttpStack.csproj", "{AB4381D7-E5DE-4F2A-82AE-01EB2F5C2FC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.AspNet", "src\HttpStack.AspNet\HttpStack.AspNet.csproj", "{5157E58F-FA4D-4806-BE42-2D6F46CAE7DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.AspNet", "src\HttpStack.AspNet\HttpStack.AspNet.csproj", "{5157E58F-FA4D-4806-BE42-2D6F46CAE7DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.AspNetCore", "src\HttpStack.AspNetCore\HttpStack.AspNetCore.csproj", "{BDA0DD63-B701-4DB5-8630-DEA3B1FA7D85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.AspNetCore", "src\HttpStack.AspNetCore\HttpStack.AspNetCore.csproj", "{BDA0DD63-B701-4DB5-8630-DEA3B1FA7D85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Owin", "src\HttpStack.Owin\HttpStack.Owin.csproj", "{B1AA3F7A-6939-462E-90A5-E9E29FCD96BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.Owin", "src\HttpStack.Owin\HttpStack.Owin.csproj", "{B1AA3F7A-6939-462E-90A5-E9E29FCD96BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.HttpListener", "src\HttpStack.HttpListener\HttpStack.HttpListener.csproj", "{AF2655F5-AC72-4925-8433-FA31176122C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.HttpListener", "src\HttpStack.HttpListener\HttpStack.HttpListener.csproj", "{AF2655F5-AC72-4925-8433-FA31176122C1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{F3CFA199-3681-459B-A605-3C0D28DE8DCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.CefSharp", "src\HttpStack.CefSharp\HttpStack.CefSharp.csproj", "{8F9D5CB3-6817-4824-A119-813FFBC27303}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.CefSharp", "src\HttpStack.CefSharp\HttpStack.CefSharp.csproj", "{8F9D5CB3-6817-4824-A119-813FFBC27303}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{66F54A64-300A-4C72-9781-F6C2400E9001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.CefSharp", "examples\HttpStack.Examples.CefSharp\HttpStack.Examples.CefSharp.csproj", "{06D6CDDA-F8D2-45F7-B6C2-93F42AEE5F50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.Examples.CefSharp", "examples\HttpStack.Examples.CefSharp\HttpStack.Examples.CefSharp.csproj", "{06D6CDDA-F8D2-45F7-B6C2-93F42AEE5F50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.HttpListener", "examples\HttpStack.Examples.HttpListener\HttpStack.Examples.HttpListener.csproj", "{49B99FB2-9298-4870-B394-4A73123A43A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.Examples.HttpListener", "examples\HttpStack.Examples.HttpListener\HttpStack.Examples.HttpListener.csproj", "{49B99FB2-9298-4870-B394-4A73123A43A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.FormParser", "src\HttpStack.FormParser\HttpStack.FormParser.csproj", "{A1B06540-7942-47A0-8DBB-1A0B51A52473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.FormParser", "src\HttpStack.FormParser\HttpStack.FormParser.csproj", "{A1B06540-7942-47A0-8DBB-1A0B51A52473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Builder", "src\HttpStack.Builder\HttpStack.Builder.csproj", "{46948CF5-0D10-41B6-816F-0DCDD64A33A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.Builder", "src\HttpStack.Builder\HttpStack.Builder.csproj", "{46948CF5-0D10-41B6-816F-0DCDD64A33A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.StaticFiles", "src\HttpStack.StaticFiles\HttpStack.StaticFiles.csproj", "{8D1C6856-2828-4D5C-9578-B17618781941}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.StaticFiles", "src\HttpStack.StaticFiles\HttpStack.StaticFiles.csproj", "{8D1C6856-2828-4D5C-9578-B17618781941}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Katana", "src\HttpStack.Katana\HttpStack.Katana.csproj", "{6B2DEE62-B0DE-4594-BA9F-8F19C3950931}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.Katana", "src\HttpStack.Katana\HttpStack.Katana.csproj", "{6B2DEE62-B0DE-4594-BA9F-8F19C3950931}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{D82B90D5-D4AB-4654-A9A4-6EEFD63C823B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.FastCGI", "src\HttpStack.FastCGI\HttpStack.FastCGI.csproj", "{2916E734-FA8E-41D5-9E57-D0CC852C3BA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.FastCGI", "src\HttpStack.FastCGI\HttpStack.FastCGI.csproj", "{2916E734-FA8E-41D5-9E57-D0CC852C3BA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.FastCGI", "examples\HttpStack.Examples.FastCGI\HttpStack.Examples.FastCGI.csproj", "{07F1EC6B-1456-4ACB-B9F0-B04200B8B782}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.Examples.FastCGI", "examples\HttpStack.Examples.FastCGI\HttpStack.Examples.FastCGI.csproj", "{07F1EC6B-1456-4ACB-B9F0-B04200B8B782}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.AspNetCore", "examples\HttpStack.Examples.AspNetCore\HttpStack.Examples.AspNetCore.csproj", "{0D5F1E53-1610-438D-8A1C-034F66904C45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.Examples.AspNetCore", "examples\HttpStack.Examples.AspNetCore\HttpStack.Examples.AspNetCore.csproj", "{0D5F1E53-1610-438D-8A1C-034F66904C45}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Files", "_Solution Files", "{5C61C385-2E78-4BA0-842C-3EDB79E9D914}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStack.AspNet.Infrastructure", "src\HttpStack.AspNet.Infrastructure\HttpStack.AspNet.Infrastructure.csproj", "{FBE787EF-2BFF-44F1-A9DD-BD5A7489F1E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.AspNet", "examples\HttpStack.Examples.AspNet\HttpStack.Examples.AspNet.csproj", "{5C018FAB-4F82-41FB-B1C2-C05A3F27D243}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,19 +114,35 @@ Global
 		{0D5F1E53-1610-438D-8A1C-034F66904C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D5F1E53-1610-438D-8A1C-034F66904C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D5F1E53-1610-438D-8A1C-034F66904C45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBE787EF-2BFF-44F1-A9DD-BD5A7489F1E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBE787EF-2BFF-44F1-A9DD-BD5A7489F1E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBE787EF-2BFF-44F1-A9DD-BD5A7489F1E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBE787EF-2BFF-44F1-A9DD-BD5A7489F1E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C018FAB-4F82-41FB-B1C2-C05A3F27D243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C018FAB-4F82-41FB-B1C2-C05A3F27D243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C018FAB-4F82-41FB-B1C2-C05A3F27D243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C018FAB-4F82-41FB-B1C2-C05A3F27D243}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5157E58F-FA4D-4806-BE42-2D6F46CAE7DE} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
 		{BDA0DD63-B701-4DB5-8630-DEA3B1FA7D85} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
-		{AF2655F5-AC72-4925-8433-FA31176122C1} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
 		{B1AA3F7A-6939-462E-90A5-E9E29FCD96BD} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
+		{AF2655F5-AC72-4925-8433-FA31176122C1} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
 		{8F9D5CB3-6817-4824-A119-813FFBC27303} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
 		{06D6CDDA-F8D2-45F7-B6C2-93F42AEE5F50} = {66F54A64-300A-4C72-9781-F6C2400E9001}
 		{49B99FB2-9298-4870-B394-4A73123A43A2} = {66F54A64-300A-4C72-9781-F6C2400E9001}
-		{6B2DEE62-B0DE-4594-BA9F-8F19C3950931} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
 		{8D1C6856-2828-4D5C-9578-B17618781941} = {D82B90D5-D4AB-4654-A9A4-6EEFD63C823B}
+		{6B2DEE62-B0DE-4594-BA9F-8F19C3950931} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
 		{2916E734-FA8E-41D5-9E57-D0CC852C3BA9} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
 		{07F1EC6B-1456-4ACB-B9F0-B04200B8B782} = {66F54A64-300A-4C72-9781-F6C2400E9001}
 		{0D5F1E53-1610-438D-8A1C-034F66904C45} = {66F54A64-300A-4C72-9781-F6C2400E9001}
+		{FBE787EF-2BFF-44F1-A9DD-BD5A7489F1E9} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
+		{5C018FAB-4F82-41FB-B1C2-C05A3F27D243} = {66F54A64-300A-4C72-9781-F6C2400E9001}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BFBD2C9D-A470-49E5-8643-13FED48E5958}
 	EndGlobalSection
 EndGlobal

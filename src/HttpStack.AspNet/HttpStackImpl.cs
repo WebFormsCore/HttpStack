@@ -5,11 +5,22 @@ using HttpStack.Host;
 
 namespace HttpStack.AspNet;
 
+public static class Globals
+{
+    public const string DidFinishStackKey = "HttpStack.DidFinishStack";
+    public static readonly object BoxedTrue = true;
+    public static readonly object BoxedFalse = false;
+}
+
 internal class HttpStackImpl : DefaultHttpStack<HttpContextImpl, HttpContext>
 {
-    public HttpStackImpl(MiddlewareDelegate middleware, IContextScopeProvider<HttpContext> scopeProvider)
+
+    private readonly bool _endRequest;
+
+    public HttpStackImpl(MiddlewareDelegate middleware, IContextScopeProvider<HttpContext> scopeProvider, bool endRequest)
         : base(middleware, scopeProvider)
     {
+        _endRequest = endRequest;
     }
 
     internal static Task DefaultHandler(IHttpContext context)
@@ -21,7 +32,9 @@ internal class HttpStackImpl : DefaultHttpStack<HttpContextImpl, HttpContext>
 
     protected override ValueTask AfterProcessRequestAsync(HttpContextImpl context, HttpContext innerContext)
     {
-        if (context.DidFinishStack)
+        context.Items[Globals.DidFinishStackKey] = context.DidFinishStack ? Globals.BoxedTrue : Globals.BoxedFalse;
+
+        if (!_endRequest || context.DidFinishStack)
         {
             return default;
         }
@@ -30,7 +43,6 @@ internal class HttpStackImpl : DefaultHttpStack<HttpContextImpl, HttpContext>
         innerContext.Response.Flush();
         innerContext.Response.SuppressContent = true;
         innerContext.ApplicationInstance.CompleteRequest();
-        innerContext.Response.End();
 
         return default;
     }

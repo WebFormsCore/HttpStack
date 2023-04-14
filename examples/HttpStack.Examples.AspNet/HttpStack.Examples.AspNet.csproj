@@ -1,0 +1,13 @@
+﻿<Project Sdk="MSBuild.SDK.SystemWeb/4.0.88">
+    
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <LangVersion>11</LangVersion>
+        <GeneratedBindingRedirectsAction>Overwrite</GeneratedBindingRedirectsAction>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\HttpStack.AspNet.Infrastructure\HttpStack.AspNet.Infrastructure.csproj" />
+    </ItemGroup>
+    
+</Project>
