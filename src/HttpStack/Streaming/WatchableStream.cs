@@ -140,7 +140,7 @@ public class WatchableStream : Stream
     public override bool CanRead => _stream.CanRead;
     public override bool CanSeek => _stream.CanSeek;
     public override bool CanTimeout => _stream.CanTimeout;
-    public override bool CanWrite => _stream.CanRead;
+    public override bool CanWrite => _stream.CanWrite;
     public override long Length => _stream.Length;
 
     public override long Position
