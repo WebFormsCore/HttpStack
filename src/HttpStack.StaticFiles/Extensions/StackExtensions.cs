@@ -5,9 +5,9 @@ namespace HttpStack.StaticFiles;
 
 public static class StackExtensions
 {
-    public static IHttpStackBuilder UseStaticFiles(this IHttpStackBuilder builder, IFileProvider fileProvider)
+    public static IHttpStackBuilder UseStaticFiles(this IHttpStackBuilder builder, IFileProvider fileProvider, PathString pathPrefix = default)
     {
-        builder.UseMiddleware(ActivatorUtilities.CreateInstance<StaticFileMiddleware>(builder.Services, fileProvider));
+        builder.UseMiddleware(ActivatorUtilities.CreateInstance<StaticFileMiddleware>(builder.Services, fileProvider, pathPrefix));
         return builder;
     }
 }

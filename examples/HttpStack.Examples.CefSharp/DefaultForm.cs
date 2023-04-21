@@ -18,7 +18,7 @@ public class DefaultForm : Form
 
         var app = new HttpStackBuilder();
 
-        app.UseStaticFiles(new EmbeddedFileProvider(typeof(DefaultForm).Assembly));
+        app.UseStaticFiles(new EmbeddedFileProvider(typeof(DefaultForm).Assembly), "wwwroot");
 
         app.Run(context => context.Response.WriteAsync($"""
             <!DOCTYPE html>
@@ -30,7 +30,7 @@ public class DefaultForm : Form
                 {string.Join("<br />", context.Request.Form.Select(i => $"{i.Key}: {i.Value}"))}
 
                 <br />
-                <img src="wwwroot/cefsharp.png" />
+                <img src="cefsharp.png" />
             </form>
             </body>
             </html>

@@ -419,6 +419,9 @@ public readonly struct PathString : IEquatable<PathString>
     /// <returns>The PathString combination of both values</returns>
     public static PathString operator +(PathString left, PathString right)
     {
+        if (!left.HasValue) return right;
+        if (!right.HasValue) return left;
+
         return left.Add(right);
     }
 

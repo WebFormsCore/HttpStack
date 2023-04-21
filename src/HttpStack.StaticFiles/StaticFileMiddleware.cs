@@ -8,10 +8,12 @@ public class StaticFileMiddleware : IMiddleware
 {
     private readonly IFileProvider _fileProvider;
     private readonly IContentTypeProvider _contentTypeProvider;
+    private readonly PathString _prefix;
 
-    public StaticFileMiddleware(IFileProvider fileProvider, IContentTypeProvider? contentTypeProvider = null)
+    public StaticFileMiddleware(IFileProvider fileProvider, IContentTypeProvider? contentTypeProvider = null, PathString prefix = default)
     {
         _fileProvider = fileProvider;
+        _prefix = prefix;
         _contentTypeProvider = contentTypeProvider ?? FileExtensionContentTypeProvider.Default;
     }
 
@@ -27,7 +29,8 @@ public class StaticFileMiddleware : IMiddleware
 
     private async Task<bool> TryServeFile(IHttpContext context)
     {
-        var path = context.Request.Path.Value;
+        var path = _prefix + context.Request.Path;
+
         if (!_contentTypeProvider.TryGetContentType(path, out var contentType))
         {
             return false;
