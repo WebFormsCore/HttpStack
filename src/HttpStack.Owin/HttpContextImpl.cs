@@ -14,7 +14,10 @@ internal class HttpContextImpl : IHttpContext<IDictionary<string, object>>
     private readonly HttpResponseImpl _response = new();
     private readonly DefaultFeatureCollection _defaultFeatures = new();
     private readonly Dictionary<object, object?> _items = new();
+
+#if NETFRAMEWORK
     private readonly HashDictionary _contextItems = new();
+#endif
 
     public async ValueTask SetContextAsync(IDictionary<string, object> env, IServiceProvider requestServices)
     {
@@ -46,6 +49,7 @@ internal class HttpContextImpl : IHttpContext<IDictionary<string, object>>
         _response.Reset();
         _items.Clear();
         _env = null!;
+        RequestServices = null!;
     }
 
     public IDictionary<string, object> InnerContext => _env;

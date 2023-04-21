@@ -34,6 +34,7 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
         _items.Reset();
         _defaultFeatures.Reset();
         _httpContext = null!;
+        RequestServices = null!;
     }
 
     public HttpContext InnerContext => _httpContext;

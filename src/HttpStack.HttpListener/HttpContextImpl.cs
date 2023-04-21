@@ -31,6 +31,7 @@ internal class HttpContextImpl : IHttpContext<HttpListenerContext>
         _response.Reset();
         _items.Clear();
         _httpContext = null!;
+        RequestServices = null!;
     }
 
     public HttpListenerContext InnerContext => _httpContext;

@@ -44,6 +44,7 @@ internal class HttpContextImpl : IHttpContext<CefContext>
         _request.Reset();
         _response.Reset();
         _items.Clear();
+        RequestServices = null!;
     }
 
 

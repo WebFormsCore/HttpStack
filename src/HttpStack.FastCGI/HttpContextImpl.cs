@@ -15,12 +15,16 @@ internal class HttpContextImpl : IHttpContext<CgiContext>
         _context = context;
         _response.SetHttpResponse(context);
         await _request.SetHttpRequestAsync(context);
+        RequestServices = requestServices;
     }
 
     public void Reset()
     {
         _context = null!;
         _features.Reset();
+        _request.Reset();
+        _response.Reset();
+        RequestServices = null!;
     }
 
     public CgiContext InnerContext => _context;
@@ -28,6 +32,6 @@ internal class HttpContextImpl : IHttpContext<CgiContext>
     public IHttpResponse Response => _response;
     public IDictionary<object, object?> Items { get; set; } = null!;
     public IServiceProvider RequestServices { get; private set; } = null!;
-    public CancellationToken RequestAborted { get; private set; }
+    public CancellationToken RequestAborted => default;
     public IFeatureCollection Features => _features;
 }
