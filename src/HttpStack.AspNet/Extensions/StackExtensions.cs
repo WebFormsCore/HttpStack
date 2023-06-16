@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
 using HttpStack.Host;
@@ -25,4 +26,7 @@ public static class StackExtensions
             endRequest
         );
     }
+
+    public static ValueTask<HttpContextContainer> CreateStackContextAsync(this HttpContext context, IServiceProvider provider)
+        => HttpContextContainer.CreateAsync<HttpContextImpl, HttpContext>(context, provider);
 }

@@ -10,7 +10,8 @@ namespace HttpStack.Host;
 public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContext>
     where TContext : class, IHttpContext<TInnerContext>, new()
 {
-    private readonly ObjectPool<TContext> _pool;
+    public static readonly ObjectPool<TContext> Pool = new DefaultObjectPool<TContext>(new ContextObjectPolicy<TContext, TInnerContext>());
+
     private readonly MiddlewareDelegate _middleware;
     private readonly IContextScopeProvider<TInnerContext> _scopeProvider;
 
@@ -18,7 +19,6 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
     {
         _middleware = middleware;
         _scopeProvider = scopeProvider;
-        _pool = new DefaultObjectPool<TContext>(new ContextObjectPolicy<TContext, TInnerContext>());
     }
 
     protected virtual ValueTask AfterProcessRequestAsync(TContext context, TInnerContext innerContext)
@@ -28,7 +28,7 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
 
     public async ValueTask ProcessRequestAsync(TInnerContext innerContext)
     {
-        var httpContext = _pool.Get();
+        var httpContext = Pool.Get();
         var scope = _scopeProvider.CreateScope(innerContext);
 
         try
@@ -41,7 +41,7 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
             }
             finally
             {
-                _pool.Return(httpContext);
+                Pool.Return(httpContext);
             }
         }
         finally
