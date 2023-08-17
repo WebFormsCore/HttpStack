@@ -10,17 +10,20 @@ namespace HttpStack.AspNetCore.Collections;
 internal class FormCollectionDictionary : IFormCollection
 {
     private Microsoft.AspNetCore.Http.IFormCollection? _formCollection;
+    private readonly FormFileCollection _formFiles = new();
 
-    public IFormFileCollection Files => throw new NotImplementedException();
+    public IFormFileCollection Files => _formFiles;
 
     public void Reset()
     {
         _formCollection = null!;
+        _formFiles.Reset();
     }
 
     public void SetFormCollection(Microsoft.AspNetCore.Http.IFormCollection nameValueCollection)
     {
         _formCollection = nameValueCollection;
+        _formFiles.SetFormFileCollection(nameValueCollection.Files);
     }
 
     public IEnumerator<KeyValuePair<string, StringValues>> GetEnumerator()

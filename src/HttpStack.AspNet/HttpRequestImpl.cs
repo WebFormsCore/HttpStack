@@ -18,6 +18,7 @@ internal class HttpRequestImpl : IHttpRequest
     {
         Path = httpRequest.Path;
         _httpRequest = httpRequest;
+        _form.SetHttpFileCollection(httpRequest.Files);
         _form.SetNameValueCollection(httpRequest.Form);
         _query.SetNameValueCollection(httpRequest.QueryString);
         _headers.SetNameValueCollection(httpRequest.Headers);

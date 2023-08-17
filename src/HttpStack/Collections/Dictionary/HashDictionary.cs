@@ -8,8 +8,8 @@ namespace HttpStack.Collections;
 public class HashDictionary : IDictionary<object, object?>
 {
     private IDictionary _dictionary = null!;
-    private ObjectCollection _keys = new();
-    private ObjectCollection _values = new();
+    private readonly ObjectCollection _keys = new();
+    private readonly ObjectCollection _values = new();
 
     public void SetDictionary(IDictionary dictionary)
     {
