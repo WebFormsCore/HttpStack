@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -65,4 +64,7 @@ public static class HttpApplicationExtensions
 
         return server;
     }
+
+    public static ValueTask<HttpContextContainer> CreateStackContextAsync(this HttpContext context)
+        => HttpContextContainer.CreateAsync<HttpContextImpl, HttpContext>(context, context.RequestServices);
 }

@@ -9,7 +9,8 @@ namespace HttpStack.Host;
 public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContext>
     where TContext : class, IHttpContext<TInnerContext>, new()
 {
-    private readonly ObjectPool<TContext> _pool;
+    public static readonly ObjectPool<TContext> Pool = new DefaultObjectPool<TContext>(new ContextObjectPolicy<TContext, TInnerContext>());
+
     private readonly MiddlewareDelegate _middleware;
     private readonly IContextScopeProvider<TInnerContext> _scopeProvider;
 
@@ -17,7 +18,6 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
     {
         _middleware = middleware;
         _scopeProvider = scopeProvider;
-        _pool = new DefaultObjectPool<TContext>(new ContextObjectPolicy<TContext, TInnerContext>());
     }
 
     protected virtual ValueTask AfterProcessRequestAsync(TContext context, TInnerContext innerContext)
@@ -38,7 +38,7 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
 
     public StackContext CreateContext(TInnerContext innerContext)
     {
-        var httpContext = _pool.Get();
+        var httpContext = Pool.Get();
         var scope = _scopeProvider.CreateScope(innerContext);
 
         httpContext.SetContext(innerContext, scope.ServiceProvider);
@@ -80,9 +80,9 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private async Task DisposeAsync(TContext httpContext, IServiceScope scope)
+    private static async Task DisposeAsync(TContext httpContext, IServiceScope scope)
     {
-        _pool.Return(httpContext);
+        Pool.Return(httpContext);
 
         switch (scope)
         {
