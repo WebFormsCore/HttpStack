@@ -16,12 +16,17 @@ internal class HttpContextImpl : IHttpContext<HttpListenerContext>
     private readonly DefaultFeatureCollection _features = new();
     private readonly Dictionary<object, object?> _items = new();
 
-    public async ValueTask SetContextAsync(HttpListenerContext httpContext, IServiceProvider requestServices)
+    public void SetContext(HttpListenerContext httpContext, IServiceProvider requestServices)
     {
         _httpContext = httpContext;
-        await _request.SetHttpRequestAsync(httpContext.Request);
+        _request.SetHttpRequest(httpContext.Request);
         _response.SetHttpResponse(httpContext.Response);
         RequestServices = requestServices;
+    }
+
+    public ValueTask LoadAsync()
+    {
+        return _request.LoadAsync();
     }
 
     public void Reset()

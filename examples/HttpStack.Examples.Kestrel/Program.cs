@@ -2,13 +2,7 @@
 using HttpStack.AspNetCore;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-var builder = new HttpApplicationBuilder();
-
-builder.Services.AddLogging(logging =>
-{
-    logging.AddConsole();
-    logging.SetMinimumLevel(LogLevel.Debug);
-});
+var builder = HttpApplication.CreateDefault();
 
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
@@ -25,8 +19,8 @@ app.Run(async context =>
 
 using var server = await app.ListenKestrelAsync();
 
-Console.WriteLine("Listening on http://localhost:8080/");
-Console.WriteLine("Press any key to exit");
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("Listening on http://localhost:8080/, press any key to exit");
 Console.ReadKey(true);
 
 await server.StopAsync(CancellationToken.None);

@@ -1,14 +1,15 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Net;
+﻿using System.Net;
 using HttpStack;
 using HttpStack.NetHttpListener;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using var listener = new HttpListener();
 
 listener.Prefixes.Add("http://localhost:8080/");
 
-var app = new HttpStackBuilder();
+var builder = HttpApplication.CreateDefault();
+var app = builder.Build();
 
 app.Run(async context =>
 {
@@ -18,8 +19,8 @@ app.Run(async context =>
 
 listener.Start(app);
 
-Console.WriteLine("Listening on http://localhost:8080/");
-Console.WriteLine("Press any key to exit");
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("Listening on http://localhost:8080/, press any key to exit");
 Console.ReadKey(true);
 
 listener.Stop();

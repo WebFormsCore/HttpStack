@@ -8,7 +8,14 @@ namespace HttpStack.AspNet;
 public class HttpResponseImpl : IHttpResponse
 {
     private HttpResponse _httpResponse = null!;
-    private readonly NameValueHeaderDictionary _headers = new();
+    private readonly NameValueHeaderDictionary _headers;
+    private readonly ResponseHeaderDictionary _responseHeaders;
+
+    public HttpResponseImpl()
+    {
+        _headers = new();
+        _responseHeaders = new(_headers);
+    }
 
     public void SetHttpResponse(HttpResponse httpResponse)
     {
@@ -34,7 +41,7 @@ public class HttpResponseImpl : IHttpResponse
         set => _httpResponse.ContentType = value;
     }
 
-    public IHeaderDictionary Headers => _headers;
+    public IResponseHeaderDictionary Headers => _responseHeaders;
 
     public Stream Body => _httpResponse.OutputStream;
 

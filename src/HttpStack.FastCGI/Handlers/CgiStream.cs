@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.FastCGI.Handlers;
 
@@ -38,7 +39,7 @@ public class CgiStream : Stream
                       {
                           0 => 0, // No values
                           1 => encoding.GetByteCount(kv.Value[0]), // Single value
-                          _ => kv.Value.Sum(v => encoding.GetByteCount(v)) + ((kv.Value.Count - 1) * 2) // Multiple values with ", "
+                          _ => GetByteCount(encoding, kv.Value) + ((kv.Value.Count - 1) * 2) // Multiple values with ", "
                       }
                       + 2; // "\r\n"
         }
@@ -99,6 +100,19 @@ public class CgiStream : Stream
         span[offset] = (byte)'\n';
 
         _stream.Position = length;
+        return;
+
+        static int GetByteCount(Encoding encoding, StringValues values)
+        {
+            var total = 0;
+
+            foreach (var value in values)
+            {
+                total += encoding.GetByteCount(value);
+            }
+
+            return total;
+        }
     }
 
     public override int Read(byte[] buffer, int offset, int count)

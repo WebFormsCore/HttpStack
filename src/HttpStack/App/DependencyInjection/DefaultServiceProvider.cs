@@ -12,6 +12,9 @@ internal class DefaultServiceProvider : IServiceProvider
         if (serviceType == typeof(IServiceScopeFactory))
             return DefaultServiceScopeFactory.Instance;
 
+        if (serviceType == typeof(IServiceProvider))
+            return this;
+
         return null;
     }
 }

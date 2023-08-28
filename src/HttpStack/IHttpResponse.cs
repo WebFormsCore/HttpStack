@@ -9,7 +9,7 @@ public interface IHttpResponse
 
     string? ContentType { get; set; }
 
-    IHeaderDictionary Headers { get; }
+    IResponseHeaderDictionary Headers { get; }
 
     Stream Body { get; }
 

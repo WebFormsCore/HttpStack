@@ -14,6 +14,8 @@ public sealed class CgiContext : IAsyncDisposable
     {
         RequestStream = new MemoryStream();
         ResponseStream = new CgiStream(this);
+        RequestHeaders = new RequestHeaderDictionary();
+        ResponseHeaders = new ResponseHeaderDictionary();
     }
 
     public SocketListener Listener { get; set; } = null!;
@@ -24,9 +26,9 @@ public sealed class CgiContext : IAsyncDisposable
 
     public Dictionary<string, string> ServerVariables { get; } = new(StringComparer.OrdinalIgnoreCase);
 
-    public HeaderDictionary RequestHeaders { get; } = new();
+    public RequestHeaderDictionary RequestHeaders { get; }
 
-    public HeaderDictionary ResponseHeaders { get; } = new();
+    public ResponseHeaderDictionary ResponseHeaders { get; }
 
     public int ResponseStatusCode { get; set; }
 

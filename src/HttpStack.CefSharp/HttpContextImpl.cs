@@ -29,12 +29,16 @@ internal class HttpContextImpl : IHttpContext<CefContext>
     private readonly DefaultFeatureCollection _features = new();
     private readonly Dictionary<object, object?> _items = new();
 
-    public ValueTask SetContextAsync(CefContext context, IServiceProvider requestServices)
+    public void SetContext(CefContext context, IServiceProvider requestServices)
     {
         _context = context;
         _request.SetHttpRequest(context.Request);
         _response.SetHttpResponse(context.Response);
         RequestServices = requestServices;
+    }
+
+    public ValueTask LoadAsync()
+    {
         return default;
     }
 

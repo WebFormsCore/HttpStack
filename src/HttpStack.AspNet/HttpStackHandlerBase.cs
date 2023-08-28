@@ -10,16 +10,14 @@ public abstract class HttpStackHandlerBase : IHttpAsyncHandler
     private readonly EventHandlerTaskAsyncHelper _wrapper;
     private readonly IHttpStack<HttpContext> _stack;
 
-    protected HttpStackHandlerBase(IHttpStackBuilder builder)
-        : this(builder.CreateAspNetStack())
+    protected HttpStackHandlerBase()
     {
-    }
-
-    protected HttpStackHandlerBase(IHttpStack<HttpContext> stack)
-    {
-        _stack = stack;
+        // ReSharper disable once VirtualMemberCallInConstructor
+        _stack = CreateStackBuilder().CreateAspNetStack();
         _wrapper = new EventHandlerTaskAsyncHelper(ExecuteStackAsync);
     }
+
+    protected abstract IHttpStackBuilder CreateStackBuilder();
 
     private Task ExecuteStackAsync(object sender, EventArgs e)
     {

@@ -19,10 +19,10 @@ internal class HttpContextImpl : IHttpContext<IDictionary<string, object>>
     private readonly HashDictionary _contextItems = new();
 #endif
 
-    public async ValueTask SetContextAsync(IDictionary<string, object> env, IServiceProvider requestServices)
+    public void SetContext(IDictionary<string, object> env, IServiceProvider requestServices)
     {
         _env = env;
-        await _request.SetHttpRequestAsync(env);
+        _request.SetHttpRequest(env);
         _response.SetHttpResponse(env);
         RequestServices = requestServices;
         RequestAborted = _env.GetOptional(OwinConstants.CallCancelled, CancellationToken.None);
@@ -40,6 +40,11 @@ internal class HttpContextImpl : IHttpContext<IDictionary<string, object>>
 #else
         Items = _items;
 #endif
+    }
+
+    public ValueTask LoadAsync()
+    {
+        return _request.LoadAsync();
     }
 
     public void Reset()

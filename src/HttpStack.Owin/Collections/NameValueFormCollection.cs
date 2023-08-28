@@ -1,16 +1,16 @@
-﻿using System;
+﻿#if NETFRAMEWORK
 using System.Web;
 using HttpStack.Collections;
 
-namespace HttpStack.AspNet.Collections;
+namespace HttpStack.Owin.Collections;
 
-public class FileCollection : NameValueDictionary, IFormCollection
+public class NameValueFormCollection : NameValueDictionary, IFormCollection
 {
     private readonly FormFileCollection _formFileCollection = new();
 
     public IFormFileCollection Files => _formFileCollection;
 
-    public void SetHttpFileCollection(HttpFileCollection collection)
+    public void SetHttpFileCollection(HttpFileCollectionBase collection)
     {
         _formFileCollection.SetHttpFileCollection(collection);
     }
@@ -21,3 +21,4 @@ public class FileCollection : NameValueDictionary, IFormCollection
         base.Reset();
     }
 }
+#endif

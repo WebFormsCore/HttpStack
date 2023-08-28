@@ -16,13 +16,17 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
     private readonly HttpResponseImpl _response = new();
     private readonly FeatureCollectionImpl _features = new();
 
-    public ValueTask SetContextAsync(HttpContext httpContext, IServiceProvider requestServices)
+    public void SetContext(HttpContext httpContext, IServiceProvider requestServices)
     {
         _httpContext = httpContext;
         RequestServices = requestServices;
         _request.SetHttpRequest(httpContext.Request);
         _response.SetHttpResponse(httpContext.Response);
         _features.SetFeatureCollection(httpContext.Features);
+    }
+
+    public ValueTask LoadAsync()
+    {
         return default;
     }
 

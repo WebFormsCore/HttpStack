@@ -11,6 +11,17 @@ public class WatchableStream : Stream
 
     public bool DidWrite { get; private set; }
 
+    private void MarkAsWrittenCore()
+    {
+        if (DidWrite) return;
+        DidWrite = true;
+        MarkAsWritten();
+    }
+
+    protected virtual void MarkAsWritten()
+    {
+    }
+
     public void SetStream(Stream inner)
     {
         _stream = inner;
@@ -50,7 +61,7 @@ public class WatchableStream : Stream
 
     public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback? callback, object? state)
     {
-        DidWrite = true;
+        MarkAsWrittenCore();
         return _stream.BeginWrite(buffer, offset, count, callback, state);
     }
 
@@ -84,13 +95,13 @@ public class WatchableStream : Stream
 
     public override void Flush()
     {
-        DidWrite = true;
+        MarkAsWrittenCore();
         _stream.Flush();
     }
 
     public override Task FlushAsync(CancellationToken cancellationToken)
     {
-        DidWrite = true;
+        MarkAsWrittenCore();
         return _stream.FlushAsync(cancellationToken);
     }
 
@@ -121,19 +132,19 @@ public class WatchableStream : Stream
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        DidWrite = true;
+        MarkAsWrittenCore();
         _stream.Write(buffer, offset, count);
     }
 
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     {
-        DidWrite = true;
+        MarkAsWrittenCore();
         return _stream.WriteAsync(buffer, offset, count, cancellationToken);
     }
 
     public override void WriteByte(byte value)
     {
-        DidWrite = true;
+        MarkAsWrittenCore();
         _stream.WriteByte(value);
     }
 
@@ -148,7 +159,7 @@ public class WatchableStream : Stream
         get => _stream.Position;
         set
         {
-            DidWrite = true;
+            MarkAsWrittenCore();
             _stream.Position = value;
         }
     }

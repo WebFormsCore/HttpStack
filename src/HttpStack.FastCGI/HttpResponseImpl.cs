@@ -39,5 +39,5 @@ public class HttpResponseImpl : IHttpResponse
         set => Headers.ContentLength = value;
     }
 
-    public IHeaderDictionary Headers => _context.ResponseHeaders;
+    public IResponseHeaderDictionary Headers => _context.ResponseHeaders;
 }

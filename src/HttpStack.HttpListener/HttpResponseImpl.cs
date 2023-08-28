@@ -10,7 +10,14 @@ public class HttpResponseImpl : IHttpResponse
 {
     private HttpListenerResponse _httpResponse = null!;
     private readonly WatchableStream _body = new();
-    private readonly NameValueHeaderDictionary _headers = new();
+    private readonly NameValueHeaderDictionary _headers;
+    private readonly ResponseHeaderDictionary _responseHeaders;
+
+    public HttpResponseImpl()
+    {
+        _headers = new();
+        _responseHeaders = new(_headers);
+    }
 
     public void SetHttpResponse(HttpListenerResponse httpResponse)
     {
@@ -48,5 +55,5 @@ public class HttpResponseImpl : IHttpResponse
         set => _httpResponse.ContentType = value;
     }
 
-    public IHeaderDictionary Headers => _headers;
+    public IResponseHeaderDictionary Headers => _responseHeaders;
 }

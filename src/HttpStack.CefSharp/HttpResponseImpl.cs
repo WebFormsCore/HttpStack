@@ -9,7 +9,14 @@ public class HttpResponseImpl : IHttpResponse
 {
     private ResourceHandler _resourceHandler = null!;
     private readonly WatchableStream _stream = new();
-    private readonly NameValueHeaderDictionary _headers = new();
+    private readonly NameValueHeaderDictionary _headers;
+    private readonly ResponseHeaderDictionary _responseHeaders;
+
+    public HttpResponseImpl()
+    {
+        _headers = new();
+        _responseHeaders = new(_headers);
+    }
 
     public void SetHttpResponse(ResourceHandler httpResponse)
     {
@@ -46,5 +53,5 @@ public class HttpResponseImpl : IHttpResponse
         set => _resourceHandler.MimeType = value;
     }
 
-    public IHeaderDictionary Headers => _headers;
+    public IResponseHeaderDictionary Headers => _responseHeaders;
 }

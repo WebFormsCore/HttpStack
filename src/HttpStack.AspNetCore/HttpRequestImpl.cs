@@ -2,6 +2,7 @@
 using System.IO;
 using System.Web;
 using HttpStack.AspNetCore.Collections;
+using HttpStack.Collections;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using IFormCollection = HttpStack.Collections.IFormCollection;
@@ -14,7 +15,14 @@ internal class HttpRequestImpl : IHttpRequest
     private HttpRequest _httpRequest = default!;
     private readonly FormCollectionDictionary _form = new();
     private readonly QueryCollectionDictionary _query = new();
-    private readonly HeaderCollectionImpl _headers = new();
+    private readonly HeaderCollectionImpl _headers;
+    private readonly RequestHeaderDictionary _requestHeaders;
+
+    public HttpRequestImpl()
+    {
+        _headers = new();
+        _requestHeaders = new(_headers);
+    }
 
     public void SetHttpRequest(HttpRequest httpRequest)
     {
@@ -48,5 +56,5 @@ internal class HttpRequestImpl : IHttpRequest
     public PathString Path { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
-    public IHeaderDictionary Headers => _headers;
+    public IRequestHeaderDictionary Headers => _requestHeaders;
 }

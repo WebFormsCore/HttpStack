@@ -11,9 +11,16 @@ namespace HttpStack.Owin;
 public class HttpResponseImpl : IHttpResponse
 {
     private IDictionary<string, object> _env = null!;
-    private readonly OwinHeaderDictionary _headers = new();
+    private readonly OwinHeaderDictionary _headers;
+    private readonly ResponseHeaderDictionary _responseHeaders;
     private readonly WatchableStream _body = new();
     private bool? _sentHeaders;
+
+    public HttpResponseImpl()
+    {
+        _headers = new();
+        _responseHeaders = new(_headers);
+    }
 
     public void SetHttpResponse(IDictionary<string, object> env)
     {
@@ -74,5 +81,5 @@ public class HttpResponseImpl : IHttpResponse
         set => Headers.ContentLength = value;
     }
 
-    public IHeaderDictionary Headers => _headers;
+    public IResponseHeaderDictionary Headers => _responseHeaders;
 }

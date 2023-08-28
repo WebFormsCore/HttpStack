@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "HttpStack_Examples_Azure_Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7152",
+      "launchBrowser": false
+    }
+  }
+}

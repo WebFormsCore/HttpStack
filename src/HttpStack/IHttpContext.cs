@@ -25,7 +25,9 @@ public interface IHttpContext<TContext> : IHttpContext
 {
     TContext InnerContext { get; }
 
-    ValueTask SetContextAsync(TContext context, IServiceProvider requestServices);
+    ValueTask LoadAsync();
+
+    void SetContext(TContext context, IServiceProvider requestServices);
 
     void Reset();
 }

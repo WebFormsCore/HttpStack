@@ -14,11 +14,23 @@ namespace HttpStack.Owin;
 internal class HttpRequestImpl : IHttpRequest
 {
     private IDictionary<string, object> _env = null!;
-    private readonly OwinHeaderDictionary _headers = new();
+    private readonly OwinHeaderDictionary _headers;
+    private readonly RequestHeaderDictionary _requestHeaders;
     private readonly NameValueDictionary _query = new();
-    private readonly FormCollection _form = new();
+    private readonly FormCollection _formCollection;
+#if NETFRAMEWORK
+    private readonly NameValueFormCollection _formNameValue = new();
+#endif
 
-    public async Task SetHttpRequestAsync(IDictionary<string, object> env)
+    public HttpRequestImpl()
+    {
+        _formCollection = new();
+        Form = _formCollection;
+        _headers = new();
+        _requestHeaders = new(_headers);
+    }
+
+    public void SetHttpRequest(IDictionary<string, object> env)
     {
         _env = env;
         Method = _env.GetRequired<string>(OwinConstants.RequestMethod);
@@ -29,14 +41,29 @@ internal class HttpRequestImpl : IHttpRequest
         _headers.SetEnvironment(_env.GetRequired<IDictionary<string, string[]>>(OwinConstants.RequestHeaders));
         Host = _headers.TryGetValue("Host", out var host) ? host.ToString() : null;
 
+#if NETFRAMEWORK
+        // Try to reuse the existing parsed query and form data
+        if (_env.TryGetValue("System.Web.HttpContextBase", out var value) && value is HttpContextBase httpContext)
+        {
+            _query.SetNameValueCollection(httpContext.Request.QueryString);
+            _formNameValue.SetNameValueCollection(httpContext.Request.Form);
+            _formNameValue.SetHttpFileCollection(httpContext.Request.Files);
+            Form = _formNameValue;
+            return;
+        }
+#endif
+
         var query = _env.GetRequired<string>(OwinConstants.RequestQueryString);
 
         if (!string.IsNullOrEmpty(query))
         {
             _query.SetQueryString(query);
         }
+    }
 
-        await _form.LoadAsync(this);
+    public async ValueTask LoadAsync()
+    {
+        await _formCollection.LoadAsync(this);
     }
 
     public void Reset()
@@ -48,9 +75,13 @@ internal class HttpRequestImpl : IHttpRequest
         Protocol = null!;
         Body = null!;
         Path = null!;
-        _query.Clear();
+        _query.Reset();
         _headers.Reset();
-        _form.Reset();
+        _formCollection.Reset();
+#if NETFRAMEWORK
+        _formNameValue.Reset();
+#endif
+        Form = _formCollection;
     }
 
     public string Method { get; private set; } = null!;
@@ -62,6 +93,8 @@ internal class HttpRequestImpl : IHttpRequest
     public Stream Body { get; private set; } = null!;
     public PathString Path { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;
-    public IFormCollection Form => _form;
-    public IHeaderDictionary Headers => _headers;
+
+    public IFormCollection Form { get; private set; }
+
+    public IRequestHeaderDictionary Headers => _requestHeaders;
 }

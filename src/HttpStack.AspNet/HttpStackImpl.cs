@@ -14,7 +14,6 @@ public static class Globals
 
 internal class HttpStackImpl : DefaultHttpStack<HttpContextImpl, HttpContext>
 {
-
     private readonly bool _endRequest;
 
     public HttpStackImpl(MiddlewareDelegate middleware, IContextScopeProvider<HttpContext> scopeProvider, bool endRequest)

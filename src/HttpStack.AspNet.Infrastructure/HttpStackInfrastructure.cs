@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Hosting;
 using HttpStack.AspNet;
 using HttpStack.AspNet.Providers;
@@ -21,13 +22,43 @@ public class HttpStackInfrastructure
 {
     private static readonly Lazy<IHttpStackStartup?> LazyStartup = new(() =>
     {
-        var startupType = AppDomain.CurrentDomain
+        var typeName = WebConfigurationManager.AppSettings["httpstack:appStartup"];
+
+        Type? startupType = null;
+
+        if (!string.IsNullOrEmpty(typeName))
+        {
+            startupType = Type.GetType(typeName, false);
+
+            if (startupType is null)
+            {
+                throw new InvalidOperationException($"The startup type configured in the httpstack:appStartup setting ({typeName}) could not be found.");
+            }
+        }
+
+        startupType ??= AppDomain.CurrentDomain
             .GetAssemblies()
             .SelectMany(x => x.GetCustomAttributes<HttpStackStartupAttribute>())
-            .SingleOrDefault();
+            .SingleOrDefault()
+            ?.Type;
+
+        startupType ??= AppDomain.CurrentDomain
+            .GetAssemblies()
+            .SelectMany(x =>
+            {
+                try
+                {
+                    return x.GetTypes();
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    return ex.Types.Where(t => t is not null);
+                }
+            })
+            .FirstOrDefault(i => i.IsClass && !i.IsAbstract && typeof(IHttpStackStartup).IsAssignableFrom(i));
 
         return startupType is not null
-            ? (IHttpStackStartup)Activator.CreateInstance(startupType.Type)
+            ? (IHttpStackStartup)Activator.CreateInstance(startupType)
             : null;
     });
 

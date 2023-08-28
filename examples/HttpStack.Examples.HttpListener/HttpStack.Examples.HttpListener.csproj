@@ -2,12 +2,14 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFrameworks>net6.0;net472</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>11</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\HttpStack.Builder\HttpStack.Builder.csproj" />
       <ProjectReference Include="..\..\src\HttpStack.HttpListener\HttpStack.HttpListener.csproj" />
     </ItemGroup>
 

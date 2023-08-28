@@ -1,16 +1,58 @@
-﻿namespace HttpStack.Collections;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using Microsoft.Extensions.Primitives;
 
-public class NameValueHeaderDictionary : NameValueDictionary, IHeaderDictionary
+namespace HttpStack.Collections;
+
+public class NameValueHeaderDictionary : BaseHeaderDictionary
 {
-    public string? ContentType
+    private readonly NameValueDictionary _nameValueCollection = new();
+
+    public void SetNameValueCollection(NameValueCollection nameValueCollection)
     {
-        get => NameValueCollection["Content-Type"];
-        set => NameValueCollection["Content-Type"] = value;
+        _nameValueCollection.SetNameValueCollection(nameValueCollection);
     }
 
-    public long? ContentLength
+    public void Reset()
     {
-        get => long.TryParse(NameValueCollection["Content-Length"], out var contentLength) ? contentLength : null;
-        set => NameValueCollection["Content-Length"] = value?.ToString();
+        _nameValueCollection.Reset();
     }
+
+    public override IEnumerator<KeyValuePair<string, StringValues>> GetEnumerator()
+    {
+        return _nameValueCollection.GetEnumerator();
+    }
+
+    public override void Clear()
+    {
+        _nameValueCollection.Clear();
+    }
+
+    public override int Count => _nameValueCollection.Count;
+
+    public override bool IsReadOnly => _nameValueCollection.IsReadOnly;
+
+    public override void Add(string key, StringValues value)
+    {
+        _nameValueCollection.Add(key, value);
+    }
+
+    public override bool ContainsKey(string key)
+    {
+        return _nameValueCollection.ContainsKey(key);
+    }
+
+    public override bool Remove(string key)
+    {
+        return _nameValueCollection.Remove(key);
+    }
+
+    public override bool TryGetValue(string key, out StringValues value)
+    {
+        return _nameValueCollection.TryGetValue(key, out value);
+    }
+
+    public override ICollection<string> Keys => _nameValueCollection.Keys;
+
+    public override ICollection<StringValues> Values => _nameValueCollection.Values;
 }

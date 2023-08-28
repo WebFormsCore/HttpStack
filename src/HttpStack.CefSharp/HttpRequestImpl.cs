@@ -16,8 +16,15 @@ internal class HttpRequestImpl : IHttpRequest
 {
     private IRequest _request = null!;
     private readonly NameValueDictionary _query = new();
-    private readonly NameValueHeaderDictionary _headers = new();
+    private readonly NameValueHeaderDictionary _headers;
+    private readonly RequestHeaderDictionary _requestHeaders;
     private readonly FormCollection _form = new();
+
+    public HttpRequestImpl()
+    {
+        _headers = new();
+        _requestHeaders = new(_headers);
+    }
 
     public void SetHttpRequest(IRequest httpRequest)
     {
@@ -124,5 +131,5 @@ internal class HttpRequestImpl : IHttpRequest
     public PathString Path { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
-    public IHeaderDictionary Headers => _headers;
+    public IRequestHeaderDictionary Headers => _requestHeaders;
 }

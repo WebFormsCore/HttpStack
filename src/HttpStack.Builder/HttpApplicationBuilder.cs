@@ -8,8 +8,13 @@ public class HttpApplicationBuilder : IHttpApplicationBuilder
     private IHttpStackBuilder? _application;
 
     public HttpApplicationBuilder()
+        : this(new ServiceCollection())
     {
-        Services = new ServiceCollection();
+    }
+
+    public HttpApplicationBuilder(IServiceCollection services)
+    {
+        Services = services;
         Logging = new LoggingBuilder(Services);
     }
 

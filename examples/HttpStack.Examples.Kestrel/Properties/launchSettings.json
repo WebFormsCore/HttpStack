@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "HttpStack.Examples.Kestrel": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57301;http://localhost:57303"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Web;
 using HttpStack.AspNetCore.Collections;
+using HttpStack.Collections;
 using Microsoft.AspNetCore.Http;
 using IHeaderDictionary = HttpStack.Collections.IHeaderDictionary;
 
@@ -9,7 +10,14 @@ namespace HttpStack.AspNetCore;
 public class HttpResponseImpl : IHttpResponse
 {
     private HttpResponse _httpResponse = default!;
-    private readonly HeaderCollectionImpl _headers = new();
+    private readonly HeaderCollectionImpl _headers;
+    private readonly ResponseHeaderDictionary _responseHeaders;
+
+    public HttpResponseImpl()
+    {
+        _headers = new();
+        _responseHeaders = new(_headers);
+    }
 
     public void SetHttpResponse(HttpResponse httpResponse)
     {
@@ -37,7 +45,7 @@ public class HttpResponseImpl : IHttpResponse
 #pragma warning restore CS8601
     }
 
-    public IHeaderDictionary Headers => _headers;
+    public IResponseHeaderDictionary Headers => _responseHeaders;
 
     public Stream Body => _httpResponse.Body;
 

@@ -10,12 +10,17 @@ internal class HttpContextImpl : IHttpContext<CgiContext>
     private readonly HttpResponseImpl _response = new();
     private readonly DefaultFeatureCollection _features = new();
 
-    public async ValueTask SetContextAsync(CgiContext context, IServiceProvider requestServices)
+    public void SetContext(CgiContext context, IServiceProvider requestServices)
     {
         _context = context;
         _response.SetHttpResponse(context);
-        await _request.SetHttpRequestAsync(context);
+        _request.SetHttpRequest(context);
         RequestServices = requestServices;
+    }
+
+    public ValueTask LoadAsync()
+    {
+        return _request.LoadAsync();
     }
 
     public void Reset()

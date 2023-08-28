@@ -1,9 +1,8 @@
 ﻿using HttpStack;
 using HttpStack.FastCGI;
 
-var stack = new HttpApplicationBuilder();
-
-var app = stack.Build();
+var builder = HttpApplication.CreateDefault();
+var app = builder.Build();
 
 app.Run(async context =>
 {

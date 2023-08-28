@@ -12,7 +12,7 @@ internal class HttpRequestImpl : IHttpRequest
     private readonly NameValueDictionary _query = new();
     private readonly FormCollection _form = new();
 
-    public async ValueTask SetHttpRequestAsync(CgiContext env)
+    public void SetHttpRequest(CgiContext env)
     {
         _context = env;
 
@@ -37,7 +37,10 @@ internal class HttpRequestImpl : IHttpRequest
         {
             _query.SetNameValueCollection(HttpUtility.ParseQueryString(queryString));
         }
+    }
 
+    public async ValueTask LoadAsync()
+    {
         await _form.LoadAsync(this);
     }
 
@@ -48,7 +51,7 @@ internal class HttpRequestImpl : IHttpRequest
         Scheme = null!;
         Protocol = null!;
         Path = null!;
-        _query.Clear();
+        _query.Reset();
         _form.Reset();
     }
 
@@ -64,5 +67,5 @@ internal class HttpRequestImpl : IHttpRequest
     public PathString Path { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
-    public IHeaderDictionary Headers => _context.RequestHeaders;
+    public IRequestHeaderDictionary Headers => _context.RequestHeaders;
 }

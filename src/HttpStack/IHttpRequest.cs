@@ -27,5 +27,5 @@ public interface IHttpRequest
 
     IFormCollection Form { get; }
 
-    IHeaderDictionary Headers { get; }
+    IRequestHeaderDictionary Headers { get; }
 }

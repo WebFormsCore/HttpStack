@@ -50,6 +50,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.AspNet",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.Kestrel", "examples\HttpStack.Examples.Kestrel\HttpStack.Examples.Kestrel.csproj", "{D87752E2-ED38-4BC2-8F4C-7751B24153FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Azure.Functions", "src\HttpStack.Azure.Functions\HttpStack.Azure.Functions.csproj", "{275CF728-FAF0-4234-98DA-EB31F34FF52A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.Azure.Functions", "examples\HttpStack.Examples.Azure.Functions\HttpStack.Examples.Azure.Functions.csproj", "{EEE88C19-2A7B-4231-82A7-7FD9A7DCC122}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.WebView2", "src\HttpStack.WebView2\HttpStack.WebView2.csproj", "{1580D9A4-C556-4C67-9E95-A7CD87EC9FA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.WebView2", "examples\HttpStack.Examples.WebView2\HttpStack.Examples.WebView2.csproj", "{B18684F4-7897-4390-A77C-BAD59B2BD408}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,6 +136,22 @@ Global
 		{D87752E2-ED38-4BC2-8F4C-7751B24153FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D87752E2-ED38-4BC2-8F4C-7751B24153FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D87752E2-ED38-4BC2-8F4C-7751B24153FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{275CF728-FAF0-4234-98DA-EB31F34FF52A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{275CF728-FAF0-4234-98DA-EB31F34FF52A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{275CF728-FAF0-4234-98DA-EB31F34FF52A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{275CF728-FAF0-4234-98DA-EB31F34FF52A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEE88C19-2A7B-4231-82A7-7FD9A7DCC122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEE88C19-2A7B-4231-82A7-7FD9A7DCC122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEE88C19-2A7B-4231-82A7-7FD9A7DCC122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEE88C19-2A7B-4231-82A7-7FD9A7DCC122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1580D9A4-C556-4C67-9E95-A7CD87EC9FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1580D9A4-C556-4C67-9E95-A7CD87EC9FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1580D9A4-C556-4C67-9E95-A7CD87EC9FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1580D9A4-C556-4C67-9E95-A7CD87EC9FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B18684F4-7897-4390-A77C-BAD59B2BD408}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{B18684F4-7897-4390-A77C-BAD59B2BD408}.Debug|Any CPU.Build.0 = Debug|x64
+		{B18684F4-7897-4390-A77C-BAD59B2BD408}.Release|Any CPU.ActiveCfg = Release|x64
+		{B18684F4-7897-4390-A77C-BAD59B2BD408}.Release|Any CPU.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +172,10 @@ Global
 		{FBE787EF-2BFF-44F1-A9DD-BD5A7489F1E9} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
 		{5C018FAB-4F82-41FB-B1C2-C05A3F27D243} = {66F54A64-300A-4C72-9781-F6C2400E9001}
 		{D87752E2-ED38-4BC2-8F4C-7751B24153FE} = {66F54A64-300A-4C72-9781-F6C2400E9001}
+		{275CF728-FAF0-4234-98DA-EB31F34FF52A} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
+		{EEE88C19-2A7B-4231-82A7-7FD9A7DCC122} = {66F54A64-300A-4C72-9781-F6C2400E9001}
+		{1580D9A4-C556-4C67-9E95-A7CD87EC9FA6} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
+		{B18684F4-7897-4390-A77C-BAD59B2BD408} = {66F54A64-300A-4C72-9781-F6C2400E9001}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFBD2C9D-A470-49E5-8643-13FED48E5958}

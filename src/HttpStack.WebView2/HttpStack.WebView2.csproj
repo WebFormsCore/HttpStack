@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net472;net6.0-windows</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+        <UseWindowsForms>true</UseWindowsForms>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1901.177" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\HttpStack.FormParser\HttpStack.FormParser.csproj" />
+        <ProjectReference Include="..\HttpStack\HttpStack.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+        <Reference Include="System.Web"/>
+    </ItemGroup>
+
+
+
+</Project>

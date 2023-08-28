@@ -11,6 +11,12 @@ public static class HttpResponseExtensions
     {
         var encoding = Encoding.UTF8;
         var length = encoding.GetMaxByteCount(content.Length);
+
+        if (length > 4096)
+        {
+            length = encoding.GetByteCount(content);
+        }
+
         var array = ArrayPool<byte>.Shared.Rent(length);
 
         try
