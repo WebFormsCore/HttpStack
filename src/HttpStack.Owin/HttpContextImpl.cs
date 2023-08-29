@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using HttpStack.Collections;
+using HttpStack.Http;
 
 namespace HttpStack.Owin;
 
@@ -64,4 +65,5 @@ internal class HttpContextImpl : IHttpContext<IDictionary<string, object>>
     public IServiceProvider RequestServices { get; private set; } = null!;
     public CancellationToken RequestAborted { get; private set; }
     public IFeatureCollection Features => _defaultFeatures;
+    public WebSocketManager WebSockets => throw new NotSupportedException();
 }

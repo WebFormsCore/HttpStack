@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using HttpStack.AspNet.Collections;
 using HttpStack.Collections;
+using HttpStack.Http;
 
 namespace HttpStack.AspNet;
 
@@ -15,6 +16,12 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
     private readonly HttpResponseImpl _response = new();
     private readonly DefaultFeatureCollection _defaultFeatures = new();
     private readonly HashDictionary _items = new();
+    private readonly WebSocketManagerImpl _webSocketManager;
+
+    public HttpContextImpl()
+    {
+        _webSocketManager = new WebSocketManagerImpl(this);
+    }
 
     public void SetContext(HttpContext httpContext, IServiceProvider requestServices)
     {
@@ -22,6 +29,7 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
         _request.SetHttpRequest(httpContext.Request);
         _response.SetHttpResponse(httpContext.Response);
         _items.SetDictionary(httpContext.Items);
+        _webSocketManager.SetContext(httpContext);
         RequestServices = requestServices;
     }
 
@@ -38,6 +46,7 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
         _items.Reset();
         _defaultFeatures.Reset();
         _httpContext = null!;
+        _webSocketManager.Reset();
         RequestServices = null!;
     }
 
@@ -49,4 +58,5 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
     public CancellationToken RequestAborted => _httpContext.Request.TimedOutToken;
     public IFeatureCollection Features => _defaultFeatures;
     public bool DidFinishStack { get; set; }
+    public WebSocketManager WebSockets => _webSocketManager;
 }

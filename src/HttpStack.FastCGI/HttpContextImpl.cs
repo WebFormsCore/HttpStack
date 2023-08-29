@@ -1,5 +1,6 @@
 ﻿using HttpStack.Collections;
 using HttpStack.FastCGI.Handlers;
+using HttpStack.Http;
 
 namespace HttpStack.FastCGI;
 
@@ -39,4 +40,5 @@ internal class HttpContextImpl : IHttpContext<CgiContext>
     public IServiceProvider RequestServices { get; private set; } = null!;
     public CancellationToken RequestAborted => default;
     public IFeatureCollection Features => _features;
+    public WebSocketManager WebSockets => throw new NotSupportedException();
 }

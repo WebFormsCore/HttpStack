@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CefSharp;
 using HttpStack.Collections;
+using HttpStack.Http;
 
 namespace HttpStack.CefSharp;
 
@@ -59,4 +60,5 @@ internal class HttpContextImpl : IHttpContext<CefContext>
     public IServiceProvider RequestServices { get; private set; } = null!;
     public CancellationToken RequestAborted => default;
     public IFeatureCollection Features => _features;
+    public WebSocketManager WebSockets => throw new NotSupportedException();
 }

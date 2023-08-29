@@ -6,15 +6,22 @@ using System.Web;
 using HttpStack.AspNetCore.Collections;
 using HttpStack.Collections;
 using Microsoft.AspNetCore.Http;
+using WebSocketManager = HttpStack.Http.WebSocketManager;
 
 namespace HttpStack.AspNetCore;
 
-internal class HttpContextImpl : IHttpContext<HttpContext>
+internal class HttpContextImpl : IHttpContext<HttpContext>, IAsyncDisposable
 {
     private HttpContext _httpContext = null!;
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
     private readonly FeatureCollectionImpl _features = new();
+    private readonly WebSocketManagerImpl _webSocketManager;
+
+    public HttpContextImpl()
+    {
+        _webSocketManager = new WebSocketManagerImpl(this);
+    }
 
     public void SetContext(HttpContext httpContext, IServiceProvider requestServices)
     {
@@ -45,4 +52,15 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
     public IServiceProvider RequestServices { get; private set; } = null!;
     public CancellationToken RequestAborted => _httpContext.RequestAborted;
     public IFeatureCollection Features => _features;
+    public WebSocketManager WebSockets => _webSocketManager;
+
+    public ValueTask DisposeAsync()
+    {
+        if (_webSocketManager.CurrentWebSocketHandler is { } task)
+        {
+            return new ValueTask(task);
+        }
+
+        return default;
+    }
 }

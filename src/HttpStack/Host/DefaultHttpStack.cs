@@ -57,14 +57,19 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
         await _middleware(httpContext);
     }
 
-    public ValueTask DisposeAsync(StackContext result)
+    public async ValueTask DisposeAsync(StackContext result)
     {
         if (result.Context is not TContext httpContext)
         {
             throw new InvalidOperationException("Invalid context type.");
         }
 
-        return DisposeMiddlewareResultAsync(httpContext, httpContext.InnerContext, result.Scope);
+        if (httpContext is IAsyncDisposable disposable)
+        {
+            await disposable.DisposeAsync();
+        }
+
+        await DisposeMiddlewareResultAsync(httpContext, httpContext.InnerContext, result.Scope);
     }
 
     private async ValueTask DisposeMiddlewareResultAsync(TContext httpContext, TInnerContext innerContext, IServiceScope scope)

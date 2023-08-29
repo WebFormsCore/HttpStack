@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HttpStack.Collections;
+using HttpStack.Http;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HttpStack.Azure.Functions;
@@ -51,4 +52,5 @@ internal class HttpContextImpl : IHttpContext<AzureContext>
     public IServiceProvider RequestServices { get; private set; } = null!;
     public CancellationToken RequestAborted => CancellationToken.None;
     public IFeatureCollection Features => _defaultFeatures;
+    public WebSocketManager WebSockets => throw new NotSupportedException();
 }

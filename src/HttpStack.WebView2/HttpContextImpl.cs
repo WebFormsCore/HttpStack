@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using HttpStack.Collections;
+using HttpStack.Http;
 using Microsoft.Web.WebView2.Core;
 
 namespace HttpStack.WebView2;
@@ -47,4 +48,5 @@ internal class HttpContextImpl : IHttpContext<WebView2Context>
     public IServiceProvider RequestServices { get; private set; } = null!;
     public CancellationToken RequestAborted => default;
     public IFeatureCollection Features => _features;
+    public WebSocketManager WebSockets => throw new NotSupportedException();
 }
