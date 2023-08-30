@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\HttpStack.AspNet.Infrastructure\HttpStack.AspNet.Infrastructure.csproj" />
+      <ProjectReference Include="..\HttpStack.Examples.Extensions.WebSocketTime\HttpStack.Examples.Extensions.WebSocketTime.csproj" />
     </ItemGroup>
 
     <ItemGroup>

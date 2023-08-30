@@ -4,10 +4,12 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>11</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\HttpStack.AspNetCore\HttpStack.AspNetCore.csproj" />
+      <ProjectReference Include="..\HttpStack.Examples.Extensions.WebSocketTime\HttpStack.Examples.Extensions.WebSocketTime.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using System.Web.Configuration;
 using HttpStack.Http;
 
 namespace HttpStack.AspNet;

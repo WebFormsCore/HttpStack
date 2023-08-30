@@ -11,6 +11,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\HttpStack.Builder\HttpStack.Builder.csproj" />
       <ProjectReference Include="..\..\src\HttpStack.HttpListener\HttpStack.HttpListener.csproj" />
+      <ProjectReference Include="..\HttpStack.Examples.Extensions.WebSocketTime\HttpStack.Examples.Extensions.WebSocketTime.csproj" />
     </ItemGroup>
 
 </Project>

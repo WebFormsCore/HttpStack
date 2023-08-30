@@ -9,17 +9,24 @@ using HttpStack.Http;
 
 namespace HttpStack.NetHttpListener;
 
-internal class HttpContextImpl : IHttpContext<HttpListenerContext>
+internal class HttpContextImpl : IHttpContext<HttpListenerContext>, IFinalizableHttpContext
 {
     private HttpListenerContext _httpContext = null!;
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
     private readonly DefaultFeatureCollection _features = new();
     private readonly Dictionary<object, object?> _items = new();
+    private readonly WebSocketManagerImpl _webSocketManager;
+
+    public HttpContextImpl()
+    {
+        _webSocketManager = new WebSocketManagerImpl(this);
+    }
 
     public void SetContext(HttpListenerContext httpContext, IServiceProvider requestServices)
     {
         _httpContext = httpContext;
+        _webSocketManager.SetContext(httpContext);
         _request.SetHttpRequest(httpContext.Request);
         _response.SetHttpResponse(httpContext.Response);
         RequestServices = requestServices;
@@ -32,6 +39,7 @@ internal class HttpContextImpl : IHttpContext<HttpListenerContext>
 
     public void Reset()
     {
+        _webSocketManager.Reset();
         _features.Reset();
         _request.Reset();
         _response.Reset();
@@ -48,5 +56,15 @@ internal class HttpContextImpl : IHttpContext<HttpListenerContext>
     public CancellationToken RequestAborted => default;
 
     public IFeatureCollection Features => _features;
-    public WebSocketManager WebSockets => throw new NotSupportedException();
+    public WebSocketManager WebSockets => _webSocketManager;
+
+    public ValueTask FinalizeAsync()
+    {
+        if (_webSocketManager.CurrentWebSocketHandler is { } task)
+        {
+            return new ValueTask(task);
+        }
+
+        return default;
+    }
 }

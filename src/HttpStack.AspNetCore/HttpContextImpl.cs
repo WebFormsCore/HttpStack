@@ -10,7 +10,7 @@ using WebSocketManager = HttpStack.Http.WebSocketManager;
 
 namespace HttpStack.AspNetCore;
 
-internal class HttpContextImpl : IHttpContext<HttpContext>, IAsyncDisposable
+internal class HttpContextImpl : IHttpContext<HttpContext>, IFinalizableHttpContext
 {
     private HttpContext _httpContext = null!;
     private readonly HttpRequestImpl _request = new();
@@ -30,6 +30,7 @@ internal class HttpContextImpl : IHttpContext<HttpContext>, IAsyncDisposable
         _request.SetHttpRequest(httpContext.Request);
         _response.SetHttpResponse(httpContext.Response);
         _features.SetFeatureCollection(httpContext.Features);
+        _webSocketManager.SetContext(httpContext);
     }
 
     public ValueTask LoadAsync()
@@ -43,6 +44,17 @@ internal class HttpContextImpl : IHttpContext<HttpContext>, IAsyncDisposable
         RequestServices = null!;
         _request.Reset();
         _response.Reset();
+        _webSocketManager.Reset();
+    }
+
+    public ValueTask FinalizeAsync()
+    {
+        if (_webSocketManager.CurrentWebSocketHandler is { } task)
+        {
+            return new ValueTask(task);
+        }
+
+        return default;
     }
 
     public HttpContext InnerContext => _httpContext;
@@ -53,14 +65,4 @@ internal class HttpContextImpl : IHttpContext<HttpContext>, IAsyncDisposable
     public CancellationToken RequestAborted => _httpContext.RequestAborted;
     public IFeatureCollection Features => _features;
     public WebSocketManager WebSockets => _webSocketManager;
-
-    public ValueTask DisposeAsync()
-    {
-        if (_webSocketManager.CurrentWebSocketHandler is { } task)
-        {
-            return new ValueTask(task);
-        }
-
-        return default;
-    }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using HttpStack;
+using HttpStack.Examples.Extensions.WebSocketTime;
 using HttpStack.NetHttpListener;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,8 @@ listener.Prefixes.Add("http://localhost:8080/");
 
 var builder = HttpApplication.CreateDefault();
 var app = builder.Build();
+
+app.UseTime();
 
 app.Run(async context =>
 {

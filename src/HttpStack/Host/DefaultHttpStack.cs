@@ -64,16 +64,16 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
             throw new InvalidOperationException("Invalid context type.");
         }
 
-        if (httpContext is IAsyncDisposable disposable)
-        {
-            await disposable.DisposeAsync();
-        }
-
         await DisposeMiddlewareResultAsync(httpContext, httpContext.InnerContext, result.Scope);
     }
 
     private async ValueTask DisposeMiddlewareResultAsync(TContext httpContext, TInnerContext innerContext, IServiceScope scope)
     {
+        if (httpContext is IFinalizableHttpContext disposable)
+        {
+            await disposable.FinalizeAsync();
+        }
+
         try
         {
             await AfterProcessRequestAsync(httpContext, innerContext);

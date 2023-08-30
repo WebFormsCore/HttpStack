@@ -18,6 +18,11 @@ public static class WebApplicationBuilderExtensions
         return app.MapWhen(condition, b => b.Run(middleware));
     }
 
+    public static IHttpStackBuilder RunPath(this IHttpStackBuilder app, PathString path, Func<IHttpContext, Task> middleware)
+    {
+        return app.MapPath(path, b => b.Run(middleware));
+    }
+
     public static IHttpStackBuilder Use(this IHttpStackBuilder app, Func<IHttpContext, Func<Task>, Task> middleware)
     {
         return app.Use(next =>

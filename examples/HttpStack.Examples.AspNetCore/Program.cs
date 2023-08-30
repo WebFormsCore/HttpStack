@@ -1,8 +1,11 @@
 using HttpStack;
 using HttpStack.AspNetCore;
+using HttpStack.Examples.Extensions.WebSocketTime;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
+
+app.UseWebSockets();
 
 app.Use(async (context, next) =>
 {
@@ -19,13 +22,14 @@ app.Use(async (context, next) =>
     await response.WriteAsync("Hello World!");
 });
 
-app.UseStack(stack =>
+var stack = app.UseStack();
+
+stack.UseTime();
+
+stack.Run(async context =>
 {
-    stack.Run(async context =>
-    {
-        context.Response.ContentType = "text/plain";
-        await context.Response.WriteAsync("Hello World!");
-    });
+    context.Response.ContentType = "text/plain";
+    await context.Response.WriteAsync("Hello World!");
 });
 
 app.Run();
