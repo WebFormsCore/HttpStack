@@ -12,6 +12,7 @@ public class HttpResponseImpl : IHttpResponse
     private HttpResponse _httpResponse = default!;
     private readonly HeaderCollectionImpl _headers;
     private readonly ResponseHeaderDictionary _responseHeaders;
+    private readonly ResponseCookiesImpl _cookies = new();
 
     public HttpResponseImpl()
     {
@@ -23,12 +24,14 @@ public class HttpResponseImpl : IHttpResponse
     {
         _httpResponse = httpResponse;
         _headers.SetHeaderDictionary(httpResponse.Headers);
+        _cookies.SetResponseCookies(httpResponse.Cookies);
     }
 
     public void Reset()
     {
         _httpResponse = null!;
         _headers.Reset();
+        _cookies.Reset();
     }
 
     public int StatusCode
@@ -56,4 +59,6 @@ public class HttpResponseImpl : IHttpResponse
         get => _httpResponse.ContentLength;
         set => _httpResponse.ContentLength = value;
     }
+
+    public IResponseCookies Cookies => _cookies;
 }

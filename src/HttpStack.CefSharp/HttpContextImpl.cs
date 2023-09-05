@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using CefSharp;
-using HttpStack.Collections;
-using HttpStack.Http;
+﻿using CefSharp;
 
 namespace HttpStack.CefSharp;
 
@@ -22,43 +15,23 @@ internal struct CefContext
     public ResourceHandler Response { get; }
 }
 
-internal class HttpContextImpl : IHttpContext<CefContext>
+internal class HttpContextImpl : DefaultHttpContext<CefContext>
 {
-    private CefContext _context;
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
-    private readonly DefaultFeatureCollection _features = new();
-    private readonly Dictionary<object, object?> _items = new();
 
-    public void SetContext(CefContext context, IServiceProvider requestServices)
+    protected override void SetContextCore(CefContext context)
     {
-        _context = context;
         _request.SetHttpRequest(context.Request);
         _response.SetHttpResponse(context.Response);
-        RequestServices = requestServices;
     }
 
-    public ValueTask LoadAsync()
+    protected override void ResetCore()
     {
-        return default;
-    }
-
-    public void Reset()
-    {
-        _features.Reset();
         _request.Reset();
         _response.Reset();
-        _items.Clear();
-        RequestServices = null!;
     }
 
-
-    public CefContext InnerContext => _context;
-    public IHttpRequest Request => _request;
-    public IHttpResponse Response => _response;
-    public IDictionary<object, object?> Items => _items;
-    public IServiceProvider RequestServices { get; private set; } = null!;
-    public CancellationToken RequestAborted => default;
-    public IFeatureCollection Features => _features;
-    public WebSocketManager WebSockets => throw new NotSupportedException();
+    public override IHttpRequest Request => _request;
+    public override IHttpResponse Response => _response;
 }

@@ -13,6 +13,7 @@ public class HttpResponseImpl : IHttpResponse
     private readonly AzureHeaderDictionary _headers;
     private readonly ResponseHeaderDictionary _responseHeaders;
     private readonly WatchableStream _body = new();
+    private readonly ResponseCookiesImpl _cookies = new();
 
     public HttpResponseImpl()
     {
@@ -25,12 +26,14 @@ public class HttpResponseImpl : IHttpResponse
         _responseData = responseData;
         _body.SetStream(_responseData.Body);
         _headers.SetHttpHeaders(_responseData.Headers);
+        _cookies.SetCookies(_responseData.Cookies);
     }
 
     public void Reset()
     {
         _body.Reset();
         _headers.Reset();
+        _cookies.Reset();
         _responseData = null!;
     }
 
@@ -57,4 +60,6 @@ public class HttpResponseImpl : IHttpResponse
     }
 
     public IResponseHeaderDictionary Headers => _responseHeaders;
+
+    public IResponseCookies Cookies => _cookies;
 }

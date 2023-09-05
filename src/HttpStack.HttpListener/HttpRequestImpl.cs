@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using HttpStack.Collections;
 using HttpStack.FormParser;
+using HttpStack.NetHttpListener.Collections;
 using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.NetHttpListener;
@@ -15,6 +16,7 @@ internal class HttpRequestImpl : IHttpRequest
     private readonly NameValueHeaderDictionary _headers;
     private readonly RequestHeaderDictionary _requestHeaders;
     private readonly FormCollection _form = new();
+    private readonly RequestCookiesImpl _cookies = new();
 
     public HttpRequestImpl()
     {
@@ -24,10 +26,12 @@ internal class HttpRequestImpl : IHttpRequest
 
     public void SetHttpRequest(HttpListenerRequest httpRequest)
     {
+        httpRequest.Cookies.ToString();
         Path = httpRequest.Url?.AbsolutePath ?? PathString.Empty;
         _httpRequest = httpRequest;
         _query.SetNameValueCollection(httpRequest.QueryString);
         _headers.SetNameValueCollection(httpRequest.Headers);
+        _cookies.SetCookieCollection(httpRequest.Cookies);
     }
 
     public async ValueTask LoadAsync()
@@ -40,6 +44,7 @@ internal class HttpRequestImpl : IHttpRequest
         _query.Reset();
         _headers.Reset();
         _form.Reset();
+        _cookies.Reset();
         _httpRequest = null!;
     }
 
@@ -55,4 +60,5 @@ internal class HttpRequestImpl : IHttpRequest
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;
+    public IRequestCookieCollection Cookies => _cookies;
 }

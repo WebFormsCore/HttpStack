@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using HttpStack.Collections;
+using HttpStack.Collections.Cookies;
 using HttpStack.FastCGI.Handlers;
 using HttpStack.FormParser;
 using Microsoft.Extensions.Primitives;
@@ -11,6 +12,12 @@ internal class HttpRequestImpl : IHttpRequest
     private CgiContext _context = null!;
     private readonly NameValueDictionary _query = new();
     private readonly FormCollection _form = new();
+    private readonly DefaultRequestCookieCollection _cookies;
+
+    public HttpRequestImpl()
+    {
+        _cookies = new(this);
+    }
 
     public void SetHttpRequest(CgiContext env)
     {
@@ -59,6 +66,7 @@ internal class HttpRequestImpl : IHttpRequest
         QueryString = default;
         _query.Reset();
         _form.Reset();
+        _cookies.Reset();
     }
 
     public string Method => _context.ServerVariables.TryGetValue("REQUEST_METHOD", out var method) ? method : "GET";
@@ -75,4 +83,5 @@ internal class HttpRequestImpl : IHttpRequest
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _context.RequestHeaders;
+    public IRequestCookieCollection Cookies => _cookies;
 }

@@ -1,56 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using HttpStack.Collections;
-using HttpStack.Http;
-using Microsoft.Azure.Functions.Worker.Http;
+﻿using System.Threading.Tasks;
 
 namespace HttpStack.Azure.Functions;
 
-internal class HttpContextImpl : IHttpContext<AzureContext>
+internal class HttpContextImpl : DefaultHttpContext<AzureContext>
 {
-    private AzureContext  _requestData = default!;
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
-    private readonly DefaultFeatureCollection _defaultFeatures = new();
-    private readonly Dictionary<object, object?> _items = new();
 
-    public void SetContext(AzureContext context, IServiceProvider requestServices)
+    protected override void SetContextCore(AzureContext context)
     {
-        _requestData = context;
         _request.SetHttpRequest(context.Request);
+        _response.SetHttpResponse(context.Response);
 
         if (context.CustomPath is {} path)
         {
             _request.Path = path;
         }
-
-        _response.SetHttpResponse(context.Response);
-        RequestServices = requestServices;
     }
 
-    public ValueTask LoadAsync()
+    protected override ValueTask LoadAsyncCore()
     {
         return _request.LoadAsync();
     }
 
-    public void Reset()
+    protected override void ResetCore()
     {
-        _defaultFeatures.Reset();
         _request.Reset();
         _response.Reset();
-        _items.Clear();
-        _requestData = default;
-        RequestServices = null!;
     }
 
-    public AzureContext InnerContext => _requestData;
-    public IHttpRequest Request => _request;
-    public IHttpResponse Response => _response;
-    public IDictionary<object, object?> Items => _items;
-    public IServiceProvider RequestServices { get; private set; } = null!;
-    public CancellationToken RequestAborted => CancellationToken.None;
-    public IFeatureCollection Features => _defaultFeatures;
-    public WebSocketManager WebSockets => throw new NotSupportedException();
+    public override IHttpRequest Request => _request;
+    public override IHttpResponse Response => _response;
 }

@@ -69,10 +69,7 @@ public class DefaultHttpStack<TContext, TInnerContext> : IHttpStack<TInnerContex
 
     private async ValueTask DisposeMiddlewareResultAsync(TContext httpContext, TInnerContext innerContext, IServiceScope scope)
     {
-        if (httpContext is IFinalizableHttpContext disposable)
-        {
-            await disposable.FinalizeAsync();
-        }
+        await httpContext.FinalizeAsync();
 
         try
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using HttpStack.Collections;
@@ -22,6 +23,8 @@ public interface IHttpContext
     IFeatureCollection Features { get; }
 
     WebSocketManager WebSockets { get; }
+
+    ClaimsPrincipal User { get; set; }
 }
 
 public interface IHttpContext<TContext> : IHttpContext
@@ -30,12 +33,9 @@ public interface IHttpContext<TContext> : IHttpContext
 
     ValueTask LoadAsync();
 
+    ValueTask FinalizeAsync();
+
     void SetContext(TContext context, IServiceProvider requestServices);
 
     void Reset();
-}
-
-public interface IFinalizableHttpContext : IHttpContext
-{
-    ValueTask FinalizeAsync();
 }

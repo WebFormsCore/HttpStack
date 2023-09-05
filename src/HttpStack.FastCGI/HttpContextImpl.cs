@@ -1,44 +1,29 @@
-﻿using HttpStack.Collections;
-using HttpStack.FastCGI.Handlers;
-using HttpStack.Http;
+﻿using HttpStack.FastCGI.Handlers;
 
 namespace HttpStack.FastCGI;
 
-internal class HttpContextImpl : IHttpContext<CgiContext>
+internal class HttpContextImpl : DefaultHttpContext<CgiContext>
 {
-    private CgiContext _context = null!;
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
-    private readonly DefaultFeatureCollection _features = new();
 
-    public void SetContext(CgiContext context, IServiceProvider requestServices)
+    protected override void SetContextCore(CgiContext context)
     {
-        _context = context;
         _response.SetHttpResponse(context);
         _request.SetHttpRequest(context);
-        RequestServices = requestServices;
     }
 
-    public ValueTask LoadAsync()
+    protected override ValueTask LoadAsyncCore()
     {
         return _request.LoadAsync();
     }
 
-    public void Reset()
+    protected override void ResetCore()
     {
-        _context = null!;
-        _features.Reset();
         _request.Reset();
         _response.Reset();
-        RequestServices = null!;
     }
 
-    public CgiContext InnerContext => _context;
-    public IHttpRequest Request => _request;
-    public IHttpResponse Response => _response;
-    public IDictionary<object, object?> Items { get; set; } = null!;
-    public IServiceProvider RequestServices { get; private set; } = null!;
-    public CancellationToken RequestAborted => default;
-    public IFeatureCollection Features => _features;
-    public WebSocketManager WebSockets => throw new NotSupportedException();
+    public override IHttpRequest Request => _request;
+    public override IHttpResponse Response => _response;
 }

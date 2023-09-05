@@ -17,6 +17,7 @@ internal class HttpRequestImpl : IHttpRequest
     private readonly QueryCollectionDictionary _query = new();
     private readonly HeaderCollectionImpl _headers;
     private readonly RequestHeaderDictionary _requestHeaders;
+    private readonly RequestCookiesImpl _cookies = new();
 
     public HttpRequestImpl()
     {
@@ -30,6 +31,7 @@ internal class HttpRequestImpl : IHttpRequest
         _httpRequest = httpRequest;
         _query.SetQueryCollection(httpRequest.Query);
         _headers.SetHeaderDictionary(httpRequest.Headers);
+        _cookies.SetRequestCookieCollection(httpRequest.Cookies);
 
         if (httpRequest.HasFormContentType)
         {
@@ -43,6 +45,7 @@ internal class HttpRequestImpl : IHttpRequest
         _form.Reset();
         _query.Reset();
         _headers.Reset();
+        _cookies.Reset();
         _httpRequest = null!;
     }
 
@@ -58,4 +61,5 @@ internal class HttpRequestImpl : IHttpRequest
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;
+    public IRequestCookieCollection Cookies => _cookies;
 }

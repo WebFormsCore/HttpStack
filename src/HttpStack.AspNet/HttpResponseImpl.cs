@@ -10,6 +10,7 @@ public class HttpResponseImpl : IHttpResponse
     private HttpResponse _httpResponse = null!;
     private readonly NameValueHeaderDictionary _headers;
     private readonly ResponseHeaderDictionary _responseHeaders;
+    private readonly ResponseCookiesImpl _cookies = new();
 
     public HttpResponseImpl()
     {
@@ -21,11 +22,13 @@ public class HttpResponseImpl : IHttpResponse
     {
         _httpResponse = httpResponse;
         _headers.SetNameValueCollection(httpResponse.Headers);
+        _cookies.SetHttpCookieCollection(httpResponse.Cookies);
     }
 
     public void Reset()
     {
         _headers.Reset();
+        _cookies.Reset();
         _httpResponse = null!;
     }
 
@@ -42,6 +45,7 @@ public class HttpResponseImpl : IHttpResponse
     }
 
     public IResponseHeaderDictionary Headers => _responseHeaders;
+    public IResponseCookies Cookies => _cookies;
 
     public Stream Body => _httpResponse.OutputStream;
 

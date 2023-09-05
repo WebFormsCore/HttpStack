@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -17,10 +18,16 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
     private readonly DefaultFeatureCollection _defaultFeatures = new();
     private readonly HashDictionary _items = new();
     private readonly WebSocketManagerImpl _webSocketManager;
+    private ClaimsPrincipal? _claim;
 
     public HttpContextImpl()
     {
         _webSocketManager = new WebSocketManagerImpl(this);
+    }
+
+    public ValueTask FinalizeAsync()
+    {
+        return default;
     }
 
     public void SetContext(HttpContext httpContext, IServiceProvider requestServices)
@@ -48,6 +55,7 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
         _httpContext = null!;
         _webSocketManager.Reset();
         RequestServices = null!;
+        _claim = null;
     }
 
     public HttpContext InnerContext => _httpContext;
@@ -59,4 +67,13 @@ internal class HttpContextImpl : IHttpContext<HttpContext>
     public IFeatureCollection Features => _defaultFeatures;
     public bool DidFinishStack { get; set; }
     public WebSocketManager WebSockets => _webSocketManager;
+    public ClaimsPrincipal User
+    {
+        get => _claim ??= _httpContext.User as ClaimsPrincipal ?? new ClaimsPrincipal(new ClaimsIdentity());
+        set
+        {
+            _claim = value;
+            _httpContext.User = value;
+        }
+    }
 }

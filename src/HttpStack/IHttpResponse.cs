@@ -11,6 +11,8 @@ public interface IHttpResponse
 
     IResponseHeaderDictionary Headers { get; }
 
+    IResponseCookies Cookies { get; }
+
     Stream Body { get; }
 
     bool HasStarted { get; }

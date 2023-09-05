@@ -7,6 +7,7 @@ using System.Text;
 using System.Web;
 using CefSharp;
 using HttpStack.Collections;
+using HttpStack.Collections.Cookies;
 using HttpStack.Forms;
 using Microsoft.Extensions.Primitives;
 
@@ -19,9 +20,11 @@ internal class HttpRequestImpl : IHttpRequest
     private readonly NameValueHeaderDictionary _headers;
     private readonly RequestHeaderDictionary _requestHeaders;
     private readonly FormCollection _form = new();
+    private readonly DefaultRequestCookieCollection _cookies;
 
     public HttpRequestImpl()
     {
+        _cookies = new(this);
         _headers = new();
         _requestHeaders = new(_headers);
     }
@@ -122,6 +125,8 @@ internal class HttpRequestImpl : IHttpRequest
         QueryString = default;
         _request = null!;
         Scheme = "http";
+        Host = null;
+        _cookies.Reset();
     }
 
     public string Method => _request.Method;
@@ -136,4 +141,5 @@ internal class HttpRequestImpl : IHttpRequest
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;
+    public IRequestCookieCollection Cookies => _cookies;
 }

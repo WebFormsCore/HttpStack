@@ -30,4 +30,6 @@ public interface IHttpRequest
     IFormCollection Form { get; }
 
     IRequestHeaderDictionary Headers { get; }
+
+    IRequestCookieCollection Cookies { get; }
 }

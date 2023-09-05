@@ -2,6 +2,7 @@
 using System.Net;
 using System.Web;
 using HttpStack.Collections;
+using HttpStack.NetHttpListener.Collections;
 using HttpStack.Streaming;
 
 namespace HttpStack.NetHttpListener;
@@ -12,6 +13,7 @@ public class HttpResponseImpl : IHttpResponse
     private readonly WatchableStream _body = new();
     private readonly NameValueHeaderDictionary _headers;
     private readonly ResponseHeaderDictionary _responseHeaders;
+    private readonly ResponseCookiesImpl _cookies = new();
 
     public HttpResponseImpl()
     {
@@ -24,12 +26,14 @@ public class HttpResponseImpl : IHttpResponse
         _httpResponse = httpResponse;
         _body.SetStream(httpResponse.OutputStream);
         _headers.SetNameValueCollection(httpResponse.Headers);
+        _cookies.SetCookieCollection(httpResponse.Cookies);
     }
 
     public void Reset()
     {
         _headers.Reset();
         _body.Reset();
+        _cookies.Reset();
         _httpResponse = null!;
     }
 
@@ -39,6 +43,8 @@ public class HttpResponseImpl : IHttpResponse
         set => _httpResponse.StatusCode = value;
     }
 
+    public IResponseCookies Cookies => _cookies;
+    
     public Stream Body => _body;
 
     public bool HasStarted => _body.DidWrite;

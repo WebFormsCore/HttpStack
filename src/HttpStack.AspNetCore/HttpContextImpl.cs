@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using HttpStack.AspNetCore.Collections;
 using HttpStack.Collections;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +10,7 @@ using WebSocketManager = HttpStack.Http.WebSocketManager;
 
 namespace HttpStack.AspNetCore;
 
-internal class HttpContextImpl : IHttpContext<HttpContext>, IFinalizableHttpContext
+internal class HttpContextImpl : IHttpContext<HttpContext>
 {
     private HttpContext _httpContext = null!;
     private readonly HttpRequestImpl _request = new();
@@ -65,4 +65,9 @@ internal class HttpContextImpl : IHttpContext<HttpContext>, IFinalizableHttpCont
     public CancellationToken RequestAborted => _httpContext.RequestAborted;
     public IFeatureCollection Features => _features;
     public WebSocketManager WebSockets => _webSocketManager;
+    public ClaimsPrincipal User
+    {
+        get => _httpContext.User;
+        set => _httpContext.User = value;
+    }
 }

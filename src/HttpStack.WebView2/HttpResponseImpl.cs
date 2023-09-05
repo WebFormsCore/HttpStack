@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using HttpStack.Collections;
+using HttpStack.Collections.Cookies;
 using HttpStack.Streaming;
 using HttpStack.WebView2.IO;
 using Microsoft.IO;
@@ -15,9 +16,11 @@ public class HttpResponseImpl : IHttpResponse
     private readonly WatchableStream _stream = new();
     private readonly HeaderDictionary _headers;
     private readonly ResponseHeaderDictionary _responseHeaders;
+    private readonly DefaultResponseCookies _cookies;
 
     public HttpResponseImpl()
     {
+        _cookies = new(this);
         _headers = new();
         _responseHeaders = new(_headers);
     }
@@ -48,9 +51,12 @@ public class HttpResponseImpl : IHttpResponse
         _memoryStream = null!;
         _stream.Reset();
         _headers.Clear();
+        _cookies.Reset();
     }
 
     public int StatusCode { get; set; } = 200;
+
+    public IResponseCookies Cookies => _cookies;
 
     public Stream Body => _stream;
 

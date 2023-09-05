@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Web;
 using HttpStack.Collections;
+using HttpStack.Collections.Cookies;
 using HttpStack.FormParser;
 using HttpStack.Owin.Collections;
 using Microsoft.Extensions.Primitives;
@@ -18,12 +19,14 @@ internal class HttpRequestImpl : IHttpRequest
     private readonly RequestHeaderDictionary _requestHeaders;
     private readonly NameValueDictionary _query = new();
     private readonly FormCollection _formCollection;
+    private readonly DefaultRequestCookieCollection _cookies;
 #if NETFRAMEWORK
     private readonly NameValueFormCollection _formNameValue = new();
 #endif
 
     public HttpRequestImpl()
     {
+        _cookies = new(this);
         _formCollection = new();
         Form = _formCollection;
         _headers = new();
@@ -82,6 +85,7 @@ internal class HttpRequestImpl : IHttpRequest
 #if NETFRAMEWORK
         _formNameValue.Reset();
 #endif
+        _cookies.Reset();
         Form = _formCollection;
         QueryString = default;
     }
@@ -100,4 +104,5 @@ internal class HttpRequestImpl : IHttpRequest
     public IFormCollection Form { get; private set; }
 
     public IRequestHeaderDictionary Headers => _requestHeaders;
+    public IRequestCookieCollection Cookies => _cookies;
 }

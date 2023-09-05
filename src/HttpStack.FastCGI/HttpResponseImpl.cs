@@ -1,4 +1,5 @@
 ﻿using HttpStack.Collections;
+using HttpStack.Collections.Cookies;
 using HttpStack.FastCGI.Handlers;
 
 namespace HttpStack.FastCGI;
@@ -6,6 +7,12 @@ namespace HttpStack.FastCGI;
 public class HttpResponseImpl : IHttpResponse
 {
     private CgiContext _context = null!;
+    private readonly DefaultResponseCookies _cookies;
+
+    public HttpResponseImpl()
+    {
+        _cookies = new(this);
+    }
 
     public void SetHttpResponse(CgiContext env)
     {
@@ -15,6 +22,7 @@ public class HttpResponseImpl : IHttpResponse
     public void Reset()
     {
         _context = null!;
+        _cookies.Reset();
     }
 
     public int StatusCode
@@ -28,6 +36,8 @@ public class HttpResponseImpl : IHttpResponse
         get => Headers.ContentType;
         set => Headers.ContentType = value;
     }
+
+    public IResponseCookies Cookies => _cookies;
 
     public Stream Body => _context.ResponseStream;
 

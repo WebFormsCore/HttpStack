@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading;
+﻿using System.Net;
 using System.Threading.Tasks;
-using System.Web;
-using HttpStack.Collections;
 using HttpStack.Http;
 
 namespace HttpStack.NetHttpListener;
 
-internal class HttpContextImpl : IHttpContext<HttpListenerContext>, IFinalizableHttpContext
+internal class HttpContextImpl : DefaultHttpContext<HttpListenerContext>
 {
-    private HttpListenerContext _httpContext = null!;
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
-    private readonly DefaultFeatureCollection _features = new();
-    private readonly Dictionary<object, object?> _items = new();
     private readonly WebSocketManagerImpl _webSocketManager;
 
     public HttpContextImpl()
@@ -23,42 +15,30 @@ internal class HttpContextImpl : IHttpContext<HttpListenerContext>, IFinalizable
         _webSocketManager = new WebSocketManagerImpl(this);
     }
 
-    public void SetContext(HttpListenerContext httpContext, IServiceProvider requestServices)
+    protected override void SetContextCore(HttpListenerContext httpContext)
     {
-        _httpContext = httpContext;
         _webSocketManager.SetContext(httpContext);
         _request.SetHttpRequest(httpContext.Request);
         _response.SetHttpResponse(httpContext.Response);
-        RequestServices = requestServices;
     }
 
-    public ValueTask LoadAsync()
+    protected override ValueTask LoadAsyncCore()
     {
         return _request.LoadAsync();
     }
 
-    public void Reset()
+    protected override void ResetCore()
     {
         _webSocketManager.Reset();
-        _features.Reset();
         _request.Reset();
         _response.Reset();
-        _items.Clear();
-        _httpContext = null!;
-        RequestServices = null!;
     }
 
-    public HttpListenerContext InnerContext => _httpContext;
-    public IHttpRequest Request => _request;
-    public IHttpResponse Response => _response;
-    public IDictionary<object, object?> Items => _items;
-    public IServiceProvider RequestServices { get; private set; } = null!;
-    public CancellationToken RequestAborted => default;
+    public override IHttpRequest Request => _request;
+    public override IHttpResponse Response => _response;
+    public override WebSocketManager WebSockets => _webSocketManager;
 
-    public IFeatureCollection Features => _features;
-    public WebSocketManager WebSockets => _webSocketManager;
-
-    public ValueTask FinalizeAsync()
+    public override ValueTask FinalizeAsync()
     {
         if (_webSocketManager.CurrentWebSocketHandler is { } task)
         {

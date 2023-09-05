@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using HttpStack.Collections;
+using HttpStack.Collections.Cookies;
 using HttpStack.Owin.Collections;
 using HttpStack.Streaming;
 
@@ -15,9 +16,11 @@ public class HttpResponseImpl : IHttpResponse
     private readonly ResponseHeaderDictionary _responseHeaders;
     private readonly WatchableStream _body = new();
     private bool? _sentHeaders;
+    private readonly DefaultResponseCookies _cookies;
 
     public HttpResponseImpl()
     {
+        _cookies = new(this);
         _headers = new();
         _responseHeaders = new(_headers);
     }
@@ -37,6 +40,7 @@ public class HttpResponseImpl : IHttpResponse
         _headers.Reset();
         _env = null!;
         _sentHeaders = null;
+        _cookies.Reset();
     }
 
     private void WatchHeaders()
@@ -70,6 +74,8 @@ public class HttpResponseImpl : IHttpResponse
         get => Headers.ContentType;
         set => Headers.ContentType = value;
     }
+
+    public IResponseCookies Cookies => _cookies;
 
     public Stream Body => _body;
 
