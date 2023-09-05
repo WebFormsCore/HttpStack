@@ -42,6 +42,7 @@ internal class HttpRequestImpl : IHttpRequest
         {
             Path = PathString.FromUriComponent(uri);
             _query.SetNameValueCollection(HttpUtility.ParseQueryString(uri.Query));
+            QueryString = new QueryString(uri.Query);
             Scheme = uri.Scheme;
             Path = uri.AbsolutePath;
             Host = uri.Host;
@@ -49,6 +50,7 @@ internal class HttpRequestImpl : IHttpRequest
         else
         {
             Path = PathString.Empty;
+            QueryString = default;
         }
     }
 
@@ -68,6 +70,7 @@ internal class HttpRequestImpl : IHttpRequest
         Method = null!;
         Body.Dispose();
         Body = null!;
+        QueryString = default;
     }
 
     public string Method { get; private set; } = null!;
@@ -78,6 +81,7 @@ internal class HttpRequestImpl : IHttpRequest
     public string? ContentType => _headers["Content-Type"];
     public Stream Body { get; private set; } = null!;
     public PathString Path { get; set; }
+    public QueryString QueryString { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;

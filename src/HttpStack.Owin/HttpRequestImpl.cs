@@ -41,6 +41,10 @@ internal class HttpRequestImpl : IHttpRequest
         _headers.SetEnvironment(_env.GetRequired<IDictionary<string, string[]>>(OwinConstants.RequestHeaders));
         Host = _headers.TryGetValue("Host", out var host) ? host.ToString() : null;
 
+        var query = _env.GetRequired<string>(OwinConstants.RequestQueryString);
+
+        QueryString = new QueryString(query);
+
 #if NETFRAMEWORK
         // Try to reuse the existing parsed query and form data
         if (_env.TryGetValue("System.Web.HttpContextBase", out var value) && value is HttpContextBase httpContext)
@@ -52,9 +56,6 @@ internal class HttpRequestImpl : IHttpRequest
             return;
         }
 #endif
-
-        var query = _env.GetRequired<string>(OwinConstants.RequestQueryString);
-
         if (!string.IsNullOrEmpty(query))
         {
             _query.SetQueryString(query);
@@ -82,6 +83,7 @@ internal class HttpRequestImpl : IHttpRequest
         _formNameValue.Reset();
 #endif
         Form = _formCollection;
+        QueryString = default;
     }
 
     public string Method { get; private set; } = null!;
@@ -92,6 +94,7 @@ internal class HttpRequestImpl : IHttpRequest
     public string? ContentType => Headers.ContentType;
     public Stream Body { get; private set; } = null!;
     public PathString Path { get; set; }
+    public QueryString QueryString { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;
 
     public IFormCollection Form { get; private set; }

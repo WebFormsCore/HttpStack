@@ -36,6 +36,11 @@ internal class HttpRequestImpl : IHttpRequest
             !string.IsNullOrEmpty(queryString))
         {
             _query.SetNameValueCollection(HttpUtility.ParseQueryString(queryString));
+            QueryString = new QueryString(queryString);
+        }
+        else
+        {
+            QueryString = default;
         }
     }
 
@@ -51,6 +56,7 @@ internal class HttpRequestImpl : IHttpRequest
         Scheme = null!;
         Protocol = null!;
         Path = null!;
+        QueryString = default;
         _query.Reset();
         _form.Reset();
     }
@@ -65,6 +71,7 @@ internal class HttpRequestImpl : IHttpRequest
     public string? ContentType => Headers.ContentType;
     public Stream Body => _context.RequestStream;
     public PathString Path { get; set; }
+    public QueryString QueryString { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _context.RequestHeaders;

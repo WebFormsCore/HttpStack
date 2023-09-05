@@ -38,10 +38,12 @@ internal class HttpRequestImpl : IHttpRequest
             Scheme = uri.Scheme;
             Path = uri.AbsolutePath;
             Host = uri.Host;
+            QueryString = new QueryString(uri.Query);
         }
         else
         {
             Path = PathString.Empty;
+            QueryString = default;
         }
 
         InitializeForm(httpRequest);
@@ -117,6 +119,7 @@ internal class HttpRequestImpl : IHttpRequest
         _query.Reset();
         _headers.Reset();
         _form.Reset();
+        QueryString = default;
         _request = null!;
         Scheme = "http";
     }
@@ -129,6 +132,7 @@ internal class HttpRequestImpl : IHttpRequest
     public string? ContentType => _request.Headers["Content-Type"];
     public Stream Body => Stream.Null;
     public PathString Path { get; set; }
+    public QueryString QueryString { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;

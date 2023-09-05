@@ -48,6 +48,7 @@ internal class HttpRequestImpl : IHttpRequest
     public string ContentType => _httpRequest.ContentType;
     public Stream Body => _httpRequest.InputStream;
     public PathString Path { get; set; }
+    public QueryString QueryString => new(_httpRequest.Url.Query);
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;

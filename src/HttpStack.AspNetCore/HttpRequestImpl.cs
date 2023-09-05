@@ -48,12 +48,13 @@ internal class HttpRequestImpl : IHttpRequest
 
     public string Method => _httpRequest.Method;
     public string Scheme => _httpRequest.Scheme;
-    public string Host => _httpRequest.Host.Host;
+    public string Host => _httpRequest.Host.Value;
     public bool IsHttps => _httpRequest.IsHttps;
     public string Protocol => _httpRequest.Protocol;
     public string? ContentType => _httpRequest.ContentType;
     public Stream Body => _httpRequest.Body;
     public PathString Path { get; set; }
+    public QueryString QueryString => new(_httpRequest.QueryString.Value);
     public IReadOnlyDictionary<string, StringValues> Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;

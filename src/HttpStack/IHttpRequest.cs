@@ -23,6 +23,8 @@ public interface IHttpRequest
 
     PathString Path { get; set; }
 
+    QueryString QueryString { get; }
+
     IReadOnlyDictionary<string, StringValues> Query { get; }
 
     IFormCollection Form { get; }
