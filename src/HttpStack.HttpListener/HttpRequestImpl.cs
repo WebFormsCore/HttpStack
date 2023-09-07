@@ -26,7 +26,7 @@ internal class HttpRequestImpl : IHttpRequest
 
     public void SetHttpRequest(HttpListenerRequest httpRequest)
     {
-        Body = _httpRequest.InputStream;
+        Body = httpRequest.InputStream;
         Path = httpRequest.Url?.AbsolutePath ?? PathString.Empty;
         _httpRequest = httpRequest;
         _query.SetNameValueCollection(httpRequest.QueryString);

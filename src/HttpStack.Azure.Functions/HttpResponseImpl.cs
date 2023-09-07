@@ -24,9 +24,9 @@ public class HttpResponseImpl : IHttpResponse
     public void SetHttpResponse(HttpResponseData responseData)
     {
         _responseData = responseData;
-        _body.SetStream(_responseData.Body);
-        _headers.SetHttpHeaders(_responseData.Headers);
-        _cookies.SetCookies(_responseData.Cookies);
+        _body.SetStream(responseData.Body);
+        _headers.SetHttpHeaders(responseData.Headers);
+        _cookies.SetCookies(responseData.Cookies);
     }
 
     public void Reset()

@@ -2,56 +2,57 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
-namespace HttpStack.AspNet.Collections;
+namespace HttpStack.AspNetCore.Collections;
 
 internal class SessionImpl : ISession
 {
-    private Microsoft.AspNetCore.Http.ISession _session = null!;
+    private HttpContext _context = null!;
 
-    public void SetSession(Microsoft.AspNetCore.Http.ISession session)
+    public void SetHttpContext(HttpContext session)
     {
-        _session = session;
+        _context = session;
     }
 
     public void Reset()
     {
-        _session = null!;
+        _context = null!;
     }
 
-    public bool IsAvailable => _session.IsAvailable;
+    public bool IsAvailable => _context.Session.IsAvailable;
 
-    public string Id => _session.Id;
+    public string Id => _context.Session.Id;
 
-    public IEnumerable<string> Keys => _session.Keys;
+    public IEnumerable<string> Keys => _context.Session.Keys;
 
-    public Task LoadAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public Task LoadAsync(CancellationToken cancellationToken = default)
     {
-        return _session.LoadAsync(cancellationToken);
+        return _context.Session.LoadAsync(cancellationToken);
     }
 
-    public Task CommitAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public Task CommitAsync(CancellationToken cancellationToken = default)
     {
-        return _session.CommitAsync(cancellationToken);
+        return _context.Session.CommitAsync(cancellationToken);
     }
 
     public bool TryGetValue(string key, [NotNullWhen(true)] out byte[]? value)
     {
-        return _session.TryGetValue(key, out value);
+        return _context.Session.TryGetValue(key, out value);
     }
 
     public void Set(string key, byte[] value)
     {
-        _session.Set(key, value);
+        _context.Session.Set(key, value);
     }
 
     public void Remove(string key)
     {
-        _session.Remove(key);
+        _context.Session.Remove(key);
     }
 
     public void Clear()
     {
-        _session.Clear();
+        _context.Session.Clear();
     }
 }

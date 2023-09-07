@@ -28,8 +28,8 @@ public class HttpResponseImpl : IHttpResponse
     public void SetHttpResponse(IDictionary<string, object> env)
     {
         _env = env;
-        _body.SetStream(_env.GetRequired<Stream>(OwinConstants.ResponseBody));
-        _headers.SetEnvironment(_env.GetRequired<IDictionary<string, string[]>>(OwinConstants.ResponseHeaders));
+        _body.SetStream(env.GetRequired<Stream>(OwinConstants.ResponseBody));
+        _headers.SetEnvironment(env.GetRequired<IDictionary<string, string[]>>(OwinConstants.ResponseHeaders));
 
         WatchHeaders();
     }

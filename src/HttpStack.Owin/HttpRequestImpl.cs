@@ -36,21 +36,21 @@ internal class HttpRequestImpl : IHttpRequest
     public void SetHttpRequest(IDictionary<string, object> env)
     {
         _env = env;
-        Method = _env.GetRequired<string>(OwinConstants.RequestMethod);
-        Scheme = _env.GetRequired<string>(OwinConstants.RequestScheme);
-        Protocol = _env.GetRequired<string>(OwinConstants.RequestProtocol);
-        Body = _env.GetRequired<Stream>(OwinConstants.RequestBody);
-        Path = _env.GetRequired<string>(OwinConstants.RequestPath);
-        _headers.SetEnvironment(_env.GetRequired<IDictionary<string, string[]>>(OwinConstants.RequestHeaders));
+        Method = env.GetRequired<string>(OwinConstants.RequestMethod);
+        Scheme = env.GetRequired<string>(OwinConstants.RequestScheme);
+        Protocol = env.GetRequired<string>(OwinConstants.RequestProtocol);
+        Body = env.GetRequired<Stream>(OwinConstants.RequestBody);
+        Path = env.GetRequired<string>(OwinConstants.RequestPath);
+        _headers.SetEnvironment(env.GetRequired<IDictionary<string, string[]>>(OwinConstants.RequestHeaders));
         Host = _headers.TryGetValue("Host", out var host) ? host.ToString() : null;
 
-        var query = _env.GetRequired<string>(OwinConstants.RequestQueryString);
+        var query = env.GetRequired<string>(OwinConstants.RequestQueryString);
 
         QueryString = new QueryString(query);
 
 #if NETFRAMEWORK
         // Try to reuse the existing parsed query and form data
-        if (_env.TryGetValue("System.Web.HttpContextBase", out var value) && value is HttpContextBase httpContext)
+        if (env.TryGetValue("System.Web.HttpContextBase", out var value) && value is HttpContextBase httpContext)
         {
             _query.SetNameValueCollection(httpContext.Request.QueryString);
             _formNameValue.SetNameValueCollection(httpContext.Request.Form);

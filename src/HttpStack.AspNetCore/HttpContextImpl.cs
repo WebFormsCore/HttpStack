@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using HttpStack.AspNet.Collections;
 using HttpStack.AspNetCore.Collections;
 using HttpStack.Collections;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +31,7 @@ internal class HttpContextImpl : DefaultHttpContext<HttpContext>
         _request.SetHttpRequest(httpContext.Request);
         _response.SetHttpResponse(httpContext.Response);
         _features.SetFeatureCollection(httpContext.Features);
-        _session.SetSession(httpContext.Session);
+        _session.SetHttpContext(httpContext);
         _webSocketManager.SetContext(httpContext);
     }
 

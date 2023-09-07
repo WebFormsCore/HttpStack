@@ -21,7 +21,7 @@ public class HttpResponseImpl : IHttpResponse
     public void SetHttpResponse(HttpResponse httpResponse)
     {
         _httpResponse = httpResponse;
-        Body = _httpResponse.OutputStream;
+        Body = httpResponse.OutputStream;
         _headers.SetNameValueCollection(httpResponse.Headers);
         _cookies.SetHttpCookieCollection(httpResponse.Cookies);
     }

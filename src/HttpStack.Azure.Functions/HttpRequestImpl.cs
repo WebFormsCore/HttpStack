@@ -27,12 +27,12 @@ internal class HttpRequestImpl : IHttpRequest
 
     public void SetHttpRequest(HttpRequestData requestData)
     {
+        _requestData = requestData;
         Path = requestData.Url.AbsolutePath;
         Body = requestData.Body;
-        _requestData = requestData;
-        _headers.SetHttpHeaders(_requestData.Headers);
-        _query.SetNameValueCollection(_requestData.Query);
-        _cookies.SetCookies(_requestData.Cookies);
+        _headers.SetHttpHeaders(requestData.Headers);
+        _query.SetNameValueCollection(requestData.Query);
+        _cookies.SetCookies(requestData.Cookies);
     }
 
     public async ValueTask LoadAsync()

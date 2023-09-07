@@ -16,8 +16,8 @@ public class HttpResponseImpl : IHttpResponse
 
     public void SetHttpResponse(CgiContext env)
     {
-        Body = _context.ResponseStream;
         _context = env;
+        Body = env.ResponseStream;
     }
 
     public void Reset()
