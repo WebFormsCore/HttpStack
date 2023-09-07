@@ -20,9 +20,9 @@ public class HttpResponseImpl : IHttpResponse
 
     public HttpResponseImpl()
     {
-        _cookies = new(this);
-        _headers = new();
-        _responseHeaders = new(_headers);
+        _cookies = new DefaultResponseCookies(this);
+        _headers = new OwinHeaderDictionary();
+        _responseHeaders = new ResponseHeaderDictionary(_headers);
     }
 
     public void SetHttpResponse(IDictionary<string, object> env)
@@ -77,7 +77,11 @@ public class HttpResponseImpl : IHttpResponse
 
     public IResponseCookies Cookies => _cookies;
 
-    public Stream Body => _body;
+    public Stream Body
+    {
+        get => _body;
+        set => _body.SetStream(value);
+    }
 
     public bool HasStarted => _sentHeaders ?? _body.DidWrite;
 

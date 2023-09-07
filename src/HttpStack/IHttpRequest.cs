@@ -19,7 +19,7 @@ public interface IHttpRequest
 
     string? ContentType { get; }
 
-    Stream Body { get; }
+    Stream Body { get; set; }
 
     PathString Path { get; set; }
 

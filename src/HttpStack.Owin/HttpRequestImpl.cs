@@ -26,11 +26,11 @@ internal class HttpRequestImpl : IHttpRequest
 
     public HttpRequestImpl()
     {
-        _cookies = new(this);
-        _formCollection = new();
+        _cookies = new DefaultRequestCookieCollection(this);
+        _formCollection = new FormCollection();
         Form = _formCollection;
-        _headers = new();
-        _requestHeaders = new(_headers);
+        _headers = new OwinHeaderDictionary();
+        _requestHeaders = new RequestHeaderDictionary(_headers);
     }
 
     public void SetHttpRequest(IDictionary<string, object> env)
@@ -77,7 +77,7 @@ internal class HttpRequestImpl : IHttpRequest
         Method = null!;
         Scheme = null!;
         Protocol = null!;
-        Body = null!;
+        Body = Stream.Null;
         Path = null!;
         _query.Reset();
         _headers.Reset();
@@ -96,7 +96,7 @@ internal class HttpRequestImpl : IHttpRequest
     public bool IsHttps => Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
     public string Protocol { get; private set; } = null!;
     public string? ContentType => Headers.ContentType;
-    public Stream Body { get; private set; } = null!;
+    public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;

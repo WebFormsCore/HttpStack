@@ -20,13 +20,13 @@ internal class HttpRequestImpl : IHttpRequest
 
     public HttpRequestImpl()
     {
-        _headers = new();
-        _requestHeaders = new(_headers);
+        _headers = new NameValueHeaderDictionary();
+        _requestHeaders = new RequestHeaderDictionary(_headers);
     }
 
     public void SetHttpRequest(HttpListenerRequest httpRequest)
     {
-        httpRequest.Cookies.ToString();
+        Body = _httpRequest.InputStream;
         Path = httpRequest.Url?.AbsolutePath ?? PathString.Empty;
         _httpRequest = httpRequest;
         _query.SetNameValueCollection(httpRequest.QueryString);
@@ -41,6 +41,7 @@ internal class HttpRequestImpl : IHttpRequest
 
     public void Reset()
     {
+        Body = Stream.Null;
         _query.Reset();
         _headers.Reset();
         _form.Reset();
@@ -54,7 +55,7 @@ internal class HttpRequestImpl : IHttpRequest
     public bool IsHttps => _httpRequest.IsSecureConnection;
     public string Protocol => _httpRequest.ProtocolVersion.ToString();
     public string? ContentType => _httpRequest.ContentType;
-    public Stream Body => _httpRequest.InputStream;
+    public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString => new(_httpRequest.Url?.Query ?? string.Empty);
     public IReadOnlyDictionary<string, StringValues> Query => _query;

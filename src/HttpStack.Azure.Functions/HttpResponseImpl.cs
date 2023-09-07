@@ -17,8 +17,8 @@ public class HttpResponseImpl : IHttpResponse
 
     public HttpResponseImpl()
     {
-        _headers = new();
-        _responseHeaders = new(_headers);
+        _headers = new AzureHeaderDictionary();
+        _responseHeaders = new ResponseHeaderDictionary(_headers);
     }
 
     public void SetHttpResponse(HttpResponseData responseData)
@@ -49,7 +49,11 @@ public class HttpResponseImpl : IHttpResponse
         set => Headers.ContentType = value;
     }
 
-    public Stream Body => _body;
+    public Stream Body
+    {
+        get => _body;
+        set => _body.SetStream(value);
+    }
 
     public bool HasStarted => _body.DidWrite;
 

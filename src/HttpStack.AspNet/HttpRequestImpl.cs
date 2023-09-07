@@ -18,13 +18,14 @@ internal class HttpRequestImpl : IHttpRequest
 
     public HttpRequestImpl()
     {
-        _headers = new();
-        _requestHeaders = new(_headers);
+        _headers = new NameValueHeaderDictionary();
+        _requestHeaders = new RequestHeaderDictionary(_headers);
     }
 
     public void SetHttpRequest(HttpRequest httpRequest)
     {
         Path = httpRequest.Path;
+        Body = _httpRequest.InputStream;
         _httpRequest = httpRequest;
         _form.SetHttpFileCollection(httpRequest.Files);
         _form.SetNameValueCollection(httpRequest.Form);
@@ -36,6 +37,7 @@ internal class HttpRequestImpl : IHttpRequest
     public void Reset()
     {
         Path = PathString.Empty;
+        Body = Stream.Null;
         _form.Reset();
         _query.Reset();
         _headers.Reset();
@@ -49,7 +51,7 @@ internal class HttpRequestImpl : IHttpRequest
     public bool IsHttps => _httpRequest.IsSecureConnection;
     public string Protocol => _httpRequest.ServerVariables["SERVER_PROTOCOL"];
     public string ContentType => _httpRequest.ContentType;
-    public Stream Body => _httpRequest.InputStream;
+    public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString => new(_httpRequest.Url.Query);
     public IReadOnlyDictionary<string, StringValues> Query => _query;

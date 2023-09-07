@@ -16,12 +16,13 @@ internal class HttpRequestImpl : IHttpRequest
 
     public HttpRequestImpl()
     {
-        _cookies = new(this);
+        _cookies = new DefaultRequestCookieCollection(this);
     }
 
     public void SetHttpRequest(CgiContext env)
     {
         _context = env;
+        Body = env.RequestStream;
 
         Path = env.ServerVariables.TryGetValue("REQUEST_URI", out var requestUri)
             ? new PathString(requestUri)
@@ -59,6 +60,7 @@ internal class HttpRequestImpl : IHttpRequest
     public void Reset()
     {
         Path = PathString.Empty;
+        Body = Stream.Null;
         _context = null!;
         Scheme = null!;
         Protocol = null!;
@@ -77,7 +79,7 @@ internal class HttpRequestImpl : IHttpRequest
         : Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
     public string Protocol { get; private set; } = null!;
     public string? ContentType => Headers.ContentType;
-    public Stream Body => _context.RequestStream;
+    public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;

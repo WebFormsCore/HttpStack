@@ -16,9 +16,9 @@ public class HttpResponseImpl : IHttpResponse
 
     public HttpResponseImpl()
     {
-        _cookies = new(this);
-        _headers = new();
-        _responseHeaders = new(_headers);
+        _cookies = new DefaultResponseCookies(this);
+        _headers = new NameValueHeaderDictionary();
+        _responseHeaders = new ResponseHeaderDictionary(_headers);
     }
 
     public void SetHttpResponse(ResourceHandler httpResponse)
@@ -43,7 +43,11 @@ public class HttpResponseImpl : IHttpResponse
 
     public IResponseCookies Cookies => _cookies;
 
-    public Stream Body => _stream;
+    public Stream Body
+    {
+        get => _stream;
+        set => _stream.SetStream(value);
+    }
 
     public bool HasStarted => _stream.DidWrite;
 

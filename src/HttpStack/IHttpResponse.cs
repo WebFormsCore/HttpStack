@@ -13,7 +13,7 @@ public interface IHttpResponse
 
     IResponseCookies Cookies { get; }
 
-    Stream Body { get; }
+    Stream Body { get; set; }
 
     bool HasStarted { get; }
 

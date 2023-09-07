@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,24 +14,34 @@ public abstract class DefaultHttpContext<T> : IHttpContext<T>
     private DefaultFeatureCollection? _features;
     private IServiceProvider? _requestServices;
     private Dictionary<object, object?>? _items;
+    private ISession? _overridenSession;
 
     public abstract IHttpRequest Request { get; }
+
     public abstract IHttpResponse Response { get; }
 
     public virtual IDictionary<object, object?> Items => _items ??= new Dictionary<object, object?>();
 
-    public virtual IServiceProvider RequestServices => _requestServices ??= EmptyServiceProvider.Instance;
+    public virtual IServiceProvider RequestServices => _requestServices ??= EmptyServiceProviderImpl.Instance;
 
     public virtual CancellationToken RequestAborted => default;
 
     public virtual IFeatureCollection Features => _features ??= new DefaultFeatureCollection();
 
-    public virtual WebSocketManager WebSockets => DefaultWebSocketManager.Instance;
+    public virtual WebSocketManager WebSockets => DefaultWebSocketManagerImp.Instance;
+
+    protected virtual ISession? DefaultSession => null;
 
     public virtual ClaimsPrincipal User
     {
         get => _user ??= new ClaimsPrincipal();
         set => _user = value;
+    }
+
+    public ISession Session
+    {
+        get => _overridenSession ?? DefaultSession ?? DefaultSessionImpl.Instance;
+        set => _overridenSession = value;
     }
 
     public T InnerContext { get; private set; } = default!;
@@ -59,24 +68,9 @@ public abstract class DefaultHttpContext<T> : IHttpContext<T>
         _features?.Reset();
         _requestServices = null;
         _items?.Clear();
+        _overridenSession = null;
         ResetCore();
     }
 
     protected abstract void ResetCore();
-}
-
-file class EmptyServiceProvider : IServiceProvider
-{
-    public static readonly EmptyServiceProvider Instance = new();
-
-    public object? GetService(Type serviceType) => null;
-}
-
-file class DefaultWebSocketManager : WebSocketManager
-{
-    public static readonly DefaultWebSocketManager Instance = new();
-
-    public override bool IsWebSocketRequest => false;
-
-    public override void AcceptWebSocketRequest(AcceptWebSocketDelegate handler) => throw new NotSupportedException();
 }

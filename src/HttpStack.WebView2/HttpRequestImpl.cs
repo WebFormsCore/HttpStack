@@ -24,9 +24,9 @@ internal class HttpRequestImpl : IHttpRequest
 
     public HttpRequestImpl()
     {
-        _cookies = new(this);
-        _headers = new();
-        _requestHeaders = new(_headers);
+        _cookies = new DefaultRequestCookieCollection(this);
+        _headers = new HeaderDictionary();
+        _requestHeaders = new RequestHeaderDictionary(_headers);
     }
 
     public void SetHttpRequest(CoreWebView2WebResourceRequest httpRequest)
@@ -72,7 +72,7 @@ internal class HttpRequestImpl : IHttpRequest
         Host = null;
         Method = null!;
         Body.Dispose();
-        Body = null!;
+        Body = Stream.Null;
         QueryString = default;
         _cookies.Reset();
     }
@@ -83,7 +83,7 @@ internal class HttpRequestImpl : IHttpRequest
     public bool IsHttps => Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
     public string Protocol => "HTTP/1.1";
     public string? ContentType => _headers["Content-Type"];
-    public Stream Body { get; private set; } = null!;
+    public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;

@@ -11,16 +11,18 @@ public class HttpResponseImpl : IHttpResponse
 
     public HttpResponseImpl()
     {
-        _cookies = new(this);
+        _cookies = new DefaultResponseCookies(this);
     }
 
     public void SetHttpResponse(CgiContext env)
     {
+        Body = _context.ResponseStream;
         _context = env;
     }
 
     public void Reset()
     {
+        Body = Stream.Null;
         _context = null!;
         _cookies.Reset();
     }
@@ -39,7 +41,7 @@ public class HttpResponseImpl : IHttpResponse
 
     public IResponseCookies Cookies => _cookies;
 
-    public Stream Body => _context.ResponseStream;
+    public Stream Body { get; set; } = Stream.Null;
 
     public bool HasStarted => _context.DidWriteHeaders;
 

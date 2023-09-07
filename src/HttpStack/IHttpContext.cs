@@ -25,6 +25,8 @@ public interface IHttpContext
     WebSocketManager WebSockets { get; }
 
     ClaimsPrincipal User { get; set; }
+
+    ISession Session { get; set; }
 }
 
 public interface IHttpContext<TContext> : IHttpContext

@@ -24,9 +24,9 @@ internal class HttpRequestImpl : IHttpRequest
 
     public HttpRequestImpl()
     {
-        _cookies = new(this);
-        _headers = new();
-        _requestHeaders = new(_headers);
+        _cookies = new DefaultRequestCookieCollection(this);
+        _headers = new NameValueHeaderDictionary();
+        _requestHeaders = new RequestHeaderDictionary(_headers);
     }
 
     public void SetHttpRequest(IRequest httpRequest)
@@ -135,7 +135,7 @@ internal class HttpRequestImpl : IHttpRequest
     public bool IsHttps => Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
     public string Protocol => "HTTP/1.1";
     public string? ContentType => _request.Headers["Content-Type"];
-    public Stream Body => Stream.Null;
+    public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString { get; set; }
     public IReadOnlyDictionary<string, StringValues> Query => _query;

@@ -14,19 +14,21 @@ public class HttpResponseImpl : IHttpResponse
 
     public HttpResponseImpl()
     {
-        _headers = new();
-        _responseHeaders = new(_headers);
+        _headers = new NameValueHeaderDictionary();
+        _responseHeaders = new ResponseHeaderDictionary(_headers);
     }
 
     public void SetHttpResponse(HttpResponse httpResponse)
     {
         _httpResponse = httpResponse;
+        Body = _httpResponse.OutputStream;
         _headers.SetNameValueCollection(httpResponse.Headers);
         _cookies.SetHttpCookieCollection(httpResponse.Cookies);
     }
 
     public void Reset()
     {
+        Body = Stream.Null;
         _headers.Reset();
         _cookies.Reset();
         _httpResponse = null!;
@@ -47,7 +49,7 @@ public class HttpResponseImpl : IHttpResponse
     public IResponseHeaderDictionary Headers => _responseHeaders;
     public IResponseCookies Cookies => _cookies;
 
-    public Stream Body => _httpResponse.OutputStream;
+    public Stream Body { get; set; } = Stream.Null;
 
     public bool HasStarted => _httpResponse.HeadersWritten;
 

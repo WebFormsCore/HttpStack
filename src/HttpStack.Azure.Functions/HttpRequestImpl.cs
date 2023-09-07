@@ -21,13 +21,14 @@ internal class HttpRequestImpl : IHttpRequest
 
     public HttpRequestImpl()
     {
-        _headers = new();
-        _requestHeaders = new(_headers);
+        _headers = new AzureHeaderDictionary();
+        _requestHeaders = new RequestHeaderDictionary(_headers);
     }
 
     public void SetHttpRequest(HttpRequestData requestData)
     {
         Path = requestData.Url.AbsolutePath;
+        Body = requestData.Body;
         _requestData = requestData;
         _headers.SetHttpHeaders(_requestData.Headers);
         _query.SetNameValueCollection(_requestData.Query);
@@ -42,6 +43,7 @@ internal class HttpRequestImpl : IHttpRequest
     public void Reset()
     {
         Path = default;
+        Body = Stream.Null;
         _requestData = null!;
         _query.Reset();
         _headers.Reset();
@@ -55,7 +57,7 @@ internal class HttpRequestImpl : IHttpRequest
     public bool IsHttps => Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
     public string Protocol => "HTTP/1.1";
     public string? ContentType => Headers.ContentType;
-    public Stream Body => _requestData.Body;
+    public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString => new(_requestData.Url.Query);
     public IReadOnlyDictionary<string, StringValues> Query => _query;

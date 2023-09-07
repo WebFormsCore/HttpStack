@@ -21,8 +21,8 @@ internal class HttpRequestImpl : IHttpRequest
 
     public HttpRequestImpl()
     {
-        _headers = new();
-        _requestHeaders = new(_headers);
+        _headers = new HeaderCollectionImpl();
+        _requestHeaders = new RequestHeaderDictionary(_headers);
     }
 
     public void SetHttpRequest(HttpRequest httpRequest)
@@ -55,7 +55,11 @@ internal class HttpRequestImpl : IHttpRequest
     public bool IsHttps => _httpRequest.IsHttps;
     public string Protocol => _httpRequest.Protocol;
     public string? ContentType => _httpRequest.ContentType;
-    public Stream Body => _httpRequest.Body;
+    public Stream Body
+    {
+        get => _httpRequest.Body;
+        set => _httpRequest.Body = value;
+    }
     public PathString Path { get; set; }
     public QueryString QueryString => new(_httpRequest.QueryString.Value);
     public IReadOnlyDictionary<string, StringValues> Query => _query;
