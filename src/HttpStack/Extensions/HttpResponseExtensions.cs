@@ -10,7 +10,7 @@ public static class HttpResponseExtensions
 {
     public static async Task WriteAsync(this IHttpResponse response, string content, CancellationToken token = default)
     {
-        if (response is IStringStream stringStream)
+        if (response.Body is IStringStream stringStream)
         {
             await stringStream.WriteAsync(content);
             return;
@@ -40,7 +40,7 @@ public static class HttpResponseExtensions
 
     public static void Write(this IHttpResponse response, string content, CancellationToken token = default)
     {
-        if (response is IStringStream stringStream)
+        if (response.Body is IStringStream stringStream)
         {
             stringStream.Write(content);
             return;
