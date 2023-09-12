@@ -27,10 +27,12 @@ public class HttpResponseImpl : IHttpResponse
         _body.SetStream(httpResponse.OutputStream);
         _headers.SetNameValueCollection(httpResponse.Headers);
         _cookies.SetCookieCollection(httpResponse.Cookies);
+        Body = _body;
     }
 
     public void Reset()
     {
+        Body = Stream.Null;
         _headers.Reset();
         _body.Reset();
         _cookies.Reset();
@@ -45,11 +47,7 @@ public class HttpResponseImpl : IHttpResponse
 
     public IResponseCookies Cookies => _cookies;
     
-    public Stream Body
-    {
-        get => _body;
-        set => _body.SetStream(value);
-    }
+    public Stream Body { get; set; } = Stream.Null;
 
     public bool HasStarted => _body.DidWrite;
 

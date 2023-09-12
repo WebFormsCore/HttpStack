@@ -26,6 +26,7 @@ public class HttpResponseImpl : IHttpResponse
         _resourceHandler = httpResponse;
         _stream.SetStream(httpResponse.Stream);
         _headers.SetNameValueCollection(httpResponse.Headers);
+        Body = _stream;
     }
 
     public void Reset()
@@ -33,6 +34,7 @@ public class HttpResponseImpl : IHttpResponse
         _headers.Reset();
         _cookies.Reset();
         _resourceHandler = null!;
+        Body = Stream.Null;
     }
 
     public int StatusCode
@@ -43,11 +45,7 @@ public class HttpResponseImpl : IHttpResponse
 
     public IResponseCookies Cookies => _cookies;
 
-    public Stream Body
-    {
-        get => _stream;
-        set => _stream.SetStream(value);
-    }
+    public Stream Body { get; set; } = Stream.Null;
 
     public bool HasStarted => _stream.DidWrite;
 

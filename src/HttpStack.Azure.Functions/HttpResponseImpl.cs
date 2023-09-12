@@ -27,6 +27,7 @@ public class HttpResponseImpl : IHttpResponse
         _body.SetStream(responseData.Body);
         _headers.SetHttpHeaders(responseData.Headers);
         _cookies.SetCookies(responseData.Cookies);
+        Body = _body;
     }
 
     public void Reset()
@@ -35,6 +36,7 @@ public class HttpResponseImpl : IHttpResponse
         _headers.Reset();
         _cookies.Reset();
         _responseData = null!;
+        Body = Stream.Null;
     }
 
     public int StatusCode
@@ -49,11 +51,7 @@ public class HttpResponseImpl : IHttpResponse
         set => Headers.ContentType = value;
     }
 
-    public Stream Body
-    {
-        get => _body;
-        set => _body.SetStream(value);
-    }
+    public Stream Body { get; set; } = Stream.Null;
 
     public bool HasStarted => _body.DidWrite;
 

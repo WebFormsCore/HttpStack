@@ -43,10 +43,12 @@ public class HttpResponseImpl : IHttpResponse
     {
         _memoryStream = Manager.GetStream();
         _stream.SetStream(_memoryStream);
+        Body = _stream;
     }
 
     public void Reset()
     {
+        Body = Stream.Null;
         StatusCode = 200;
         _memoryStream = null!;
         _stream.Reset();
@@ -58,11 +60,7 @@ public class HttpResponseImpl : IHttpResponse
 
     public IResponseCookies Cookies => _cookies;
 
-    public Stream Body
-    {
-        get => _stream;
-        set => _stream.SetStream(value);
-    }
+    public Stream Body { get; set; } = Stream.Null;
 
     public bool HasStarted => _stream.DidWrite;
 

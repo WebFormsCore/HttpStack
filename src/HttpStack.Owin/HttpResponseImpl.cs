@@ -30,12 +30,14 @@ public class HttpResponseImpl : IHttpResponse
         _env = env;
         _body.SetStream(env.GetRequired<Stream>(OwinConstants.ResponseBody));
         _headers.SetEnvironment(env.GetRequired<IDictionary<string, string[]>>(OwinConstants.ResponseHeaders));
+        Body = _body;
 
         WatchHeaders();
     }
 
     public void Reset()
     {
+        Body = Stream.Null;
         _body.Reset();
         _headers.Reset();
         _env = null!;
@@ -77,11 +79,7 @@ public class HttpResponseImpl : IHttpResponse
 
     public IResponseCookies Cookies => _cookies;
 
-    public Stream Body
-    {
-        get => _body;
-        set => _body.SetStream(value);
-    }
+    public Stream Body { get; set; } = Stream.Null;
 
     public bool HasStarted => _sentHeaders ?? _body.DidWrite;
 
