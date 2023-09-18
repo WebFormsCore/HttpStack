@@ -60,7 +60,9 @@ public class HeaderCollectionImpl : IHeaderDictionary
 
     public void Add(string key, StringValues value)
     {
+        #pragma warning disable ASP0019
         _headerDictionary.Add(key, value);
+        #pragma warning restore ASP0019
     }
 
     public bool ContainsKey(string key)

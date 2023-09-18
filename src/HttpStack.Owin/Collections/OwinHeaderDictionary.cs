@@ -28,7 +28,7 @@ internal class OwinHeaderDictionary : BaseHeaderDictionary
 
     public override void Add(KeyValuePair<string, StringValues> item)
     {
-        _dictionary[item.Key] = item.Value.ToArray();
+        _dictionary[item.Key] = item.Value.ToArray()!;
     }
 
     public override void Clear()
@@ -47,7 +47,7 @@ internal class OwinHeaderDictionary : BaseHeaderDictionary
 
     public override void Add(string key, StringValues value)
     {
-        _dictionary.Add(key, value);
+        _dictionary.Add(key, value.ToArray()!);
     }
 
     public override bool Remove(string key)

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttpStack;
@@ -9,7 +10,11 @@ public static class MiddlewareExtensions
         return app.Use(next => context => middleware.Invoke(context, next));
     }
 
-    public static IHttpStackBuilder UseMiddleware<T>(this IHttpStackBuilder app)
+    public static IHttpStackBuilder UseMiddleware<
+        #if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+        #endif
+        T>(this IHttpStackBuilder app)
         where T : IMiddleware
     {
         return app.Use(next => context =>

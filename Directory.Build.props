@@ -1,7 +1,7 @@
 <Project>
 
     <PropertyGroup>
-        <Version>0.0.1-alpha.11</Version>
+        <Version>0.0.1-alpha.12</Version>
         <PackageVersion>$(Version)</PackageVersion>
         <Authors>HttpStack</Authors>
         <RepositoryUrl>https://github.com/WebFormsCore/HttpStack</RepositoryUrl>
@@ -12,6 +12,10 @@
         <ExtensionsVersion>6.0.0</ExtensionsVersion>
         <NoWarn>$(NoWarn);CS0436;CS9057;ASP0000;NU5128</NoWarn>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(TargetFramework) == 'net8.0'">
+        <ExtensionsVersion>8.0.0-preview.7.23375.6</ExtensionsVersion>
     </PropertyGroup>
 
 </Project>

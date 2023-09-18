@@ -38,7 +38,7 @@ public class CgiStream : Stream
                       + kv.Value.Count switch
                       {
                           0 => 0, // No values
-                          1 => encoding.GetByteCount(kv.Value[0]), // Single value
+                          1 => encoding.GetByteCount(kv.Value[0]!), // Single value
                           _ => GetByteCount(encoding, kv.Value) + ((kv.Value.Count - 1) * 2) // Multiple values with ", "
                       }
                       + 2; // "\r\n"
@@ -108,7 +108,7 @@ public class CgiStream : Stream
 
             foreach (var value in values)
             {
-                total += encoding.GetByteCount(value);
+                total += encoding.GetByteCount(value!);
             }
 
             return total;
