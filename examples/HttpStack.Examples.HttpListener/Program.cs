@@ -1,15 +1,12 @@
-﻿using System.Net;
-using HttpStack;
+﻿using HttpStack;
 using HttpStack.Examples.Extensions.WebSocketTime;
 using HttpStack.NetHttpListener;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using var listener = new HttpListener();
-
-listener.Prefixes.Add("http://localhost:8080/");
+using Microsoft.Extensions.Hosting;
 
 var builder = HttpApplication.CreateDefault();
+
+builder.AddHttpListener("http://localhost:8080/");
+
 var app = builder.Build();
 
 app.UseTime();
@@ -20,10 +17,4 @@ app.Run(async context =>
     await context.Response.WriteAsync("Hello World!");
 });
 
-listener.Start(app);
-
-var logger = app.Services.GetRequiredService<ILogger<Program>>();
-logger.LogInformation("Listening on http://localhost:8080/, press any key to exit");
-Console.ReadKey(true);
-
-listener.Stop();
+await app.RunAsync();

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Hosting;
 
 namespace HttpStack;
 
-public interface IHttpStackBuilder
+public interface IHttpStackBuilder : IHost
 {
-    IDictionary<object, object?> Properties { get; }
-
-    IServiceProvider Services { get; }
+    IDictionary<string, object?> Properties { get; }
 
     IHttpStackBuilder New();
 

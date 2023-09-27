@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using HttpStack.AspNetCore.Host;
+using HttpStack.DependencyInjection;
 using HttpStack.Host;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -39,30 +44,23 @@ public static class HttpApplicationExtensions
         return builder;
     }
 
-    public static async Task<KestrelServer> ListenKestrelAsync(this IHttpStackBuilder app, CancellationToken cancellationToken = default)
+    public static async Task<IStackService> StartKestrelAsync(this IHttpStackBuilder app, CancellationToken cancellationToken = default)
     {
-        var stack = app.CreateStack<HttpContextImpl, HttpContext>();
-        var application = new HttpStackApplication(stack);
+        var service = ActivatorUtilities.CreateInstance<KestrelStackService>(app.Services);
+        await service.StartAsync(app, cancellationToken);
+        return service;
+    }
 
-        var loggerFactory = app.Services.GetService<ILoggerFactory>() ?? new NullLoggerFactory();
-        var socketOptions = app.Services.GetService<IOptions<SocketTransportOptions>>() ?? Options.Create(new SocketTransportOptions());
+    public static IHttpHostBuilder AddKestrelStack(this IHttpHostBuilder builder, Action<KestrelServerOptions>? configure = null)
+    {
+        builder.Services.TryAddSingleton<IStackService, KestrelStackService>();
 
-        var transportFactory = new SocketTransportFactory(socketOptions, loggerFactory);
+        if (configure is not null)
+        {
+            builder.Services.Configure(configure);
+        }
 
-        var options = app.Services.GetService<IOptions<KestrelServerOptions>>()?.Value ??
-                      new KestrelServerOptions();
-
-        options.ApplicationServices = app.Services;
-
-        var server = new KestrelServer(
-            Options.Create(options),
-            transportFactory,
-            loggerFactory
-        );
-
-        await server.StartAsync(application, cancellationToken);
-
-        return server;
+        return builder;
     }
 
     public static ValueTask<HttpContextContainer> CreateStackContextAsync(this HttpContext context)

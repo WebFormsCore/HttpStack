@@ -22,14 +22,15 @@ app.Use(async (context, next) =>
     await response.WriteAsync("Hello World!");
 });
 
-var stack = app.UseStack();
-
-stack.UseTime();
-
-stack.Run(async context =>
+app.UseStack(stack =>
 {
-    context.Response.ContentType = "text/plain";
-    await context.Response.WriteAsync("Hello World!");
+    stack.UseTime();
+
+    stack.Run(async context =>
+    {
+        context.Response.ContentType = "text/plain";
+        await context.Response.WriteAsync("Hello World!");
+    });
 });
 
 app.Run();
