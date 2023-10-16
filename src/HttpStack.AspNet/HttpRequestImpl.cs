@@ -7,7 +7,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.AspNet;
 
-internal class HttpRequestImpl : IHttpRequest
+internal class HttpRequestImpl : IReadOnlyHttpRequest
 {
     private HttpRequest _httpRequest = null!;
     private readonly NameValueFormCollection _form = new();
@@ -27,11 +27,6 @@ internal class HttpRequestImpl : IHttpRequest
         Path = httpRequest.Path;
         Body = httpRequest.InputStream;
         _httpRequest = httpRequest;
-        _form.SetHttpFileCollection(httpRequest.Files);
-        _form.SetNameValueCollection(httpRequest.Form);
-        _query.SetNameValueCollection(httpRequest.QueryString);
-        _headers.SetNameValueCollection(httpRequest.Headers);
-        _cookies.SetHttpCookieCollection(httpRequest.Cookies);
     }
 
     public void Reset()
@@ -54,8 +49,40 @@ internal class HttpRequestImpl : IHttpRequest
     public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString => new(_httpRequest.Url.Query);
-    public IReadOnlyDictionary<string, StringValues> Query => _query;
-    public IFormCollection Form => _form;
-    public IRequestHeaderDictionary Headers => _requestHeaders;
-    public IRequestCookieCollection Cookies => _cookies;
+    public IQueryCollection Query
+    {
+        get
+        {
+            _query.SetNameValueCollection(_httpRequest.QueryString);
+            return _query;
+        }
+    }
+
+    public IFormCollection Form
+    {
+        get
+        {
+            _form.SetHttpFileCollection(_httpRequest.Files);
+            _form.SetNameValueCollection(_httpRequest.Form);
+            return _form;
+        }
+    }
+
+    public IRequestHeaderDictionary Headers
+    {
+        get
+        {
+            _headers.SetNameValueCollection(_httpRequest.Headers);
+            return _requestHeaders;
+        }
+    }
+
+    public IRequestCookieCollection Cookies
+    {
+        get
+        {
+            _cookies.SetHttpCookieCollection(_httpRequest.Cookies);
+            return _cookies;
+        }
+    }
 }

@@ -6,7 +6,7 @@ using HttpStack.Collections;
 
 namespace HttpStack.Owin;
 
-internal class HttpContextImpl : DefaultHttpContext<IDictionary<string, object>>
+internal class HttpContextImpl : BaseHttpContext<IDictionary<string, object>>
 {
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();

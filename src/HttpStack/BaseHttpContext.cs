@@ -8,7 +8,7 @@ using HttpStack.Http;
 
 namespace HttpStack;
 
-public abstract class DefaultHttpContext<T> : IHttpContext<T>
+public abstract class BaseHttpContext<T> : IHttpContext<T>
 {
     private ClaimsPrincipal? _user;
     private DefaultFeatureCollection? _features;

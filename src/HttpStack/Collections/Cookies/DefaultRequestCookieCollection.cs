@@ -9,11 +9,11 @@ public class DefaultRequestCookieCollection : IRequestCookieCollection
     private const int MaxCookies = 300;
     private const int MaxCookieSize = 4096;
 
-    private readonly IHttpRequest _request;
+    private readonly IReadOnlyHttpRequest _request;
     private readonly Dictionary<string, string> _cookies = new();
     private bool _isLoaded;
 
-    public DefaultRequestCookieCollection(IHttpRequest request)
+    public DefaultRequestCookieCollection(IReadOnlyHttpRequest request)
     {
         _request = request;
     }

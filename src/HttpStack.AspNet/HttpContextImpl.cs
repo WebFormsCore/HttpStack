@@ -8,10 +8,11 @@ using HttpStack.Http;
 
 namespace HttpStack.AspNet;
 
-internal class HttpContextImpl : DefaultHttpContext<HttpContext>
+internal class HttpContextImpl : BaseHttpContext<HttpContext>
 {
     private HttpContext _httpContext = null!;
     private readonly HttpRequestImpl _request = new();
+    private readonly LazyHttpRequest _lazyRequest;
     private readonly HttpResponseImpl _response = new();
     private readonly HashDictionary _items = new();
     private readonly WebSocketManagerImpl _webSocketManager;
@@ -21,6 +22,7 @@ internal class HttpContextImpl : DefaultHttpContext<HttpContext>
     public HttpContextImpl()
     {
         _webSocketManager = new WebSocketManagerImpl(this);
+        _lazyRequest = new LazyHttpRequest(_request);
     }
 
     protected override void SetContextCore(HttpContext httpContext)
@@ -37,6 +39,7 @@ internal class HttpContextImpl : DefaultHttpContext<HttpContext>
     {
         DidFinishStack = false;
         _request.Reset();
+        _lazyRequest.Reset();
         _response.Reset();
         _items.Reset();
         _httpContext = null!;
@@ -48,7 +51,7 @@ internal class HttpContextImpl : DefaultHttpContext<HttpContext>
     protected override ISession DefaultSession => _session;
 
     public bool DidFinishStack { get; set; }
-    public override IHttpRequest Request => _request;
+    public override IHttpRequest Request => _lazyRequest;
     public override IHttpResponse Response => _response;
     public override IDictionary<object, object?> Items => _items;
     public override CancellationToken RequestAborted => _httpContext.Request.TimedOutToken;

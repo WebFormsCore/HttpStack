@@ -8,29 +8,29 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace HttpStack.AspNetCore;
 
-public class HttpStackApplication : IHttpApplication<DefaultHttpContext>
+public class HttpStackApplication : IHttpApplication<Microsoft.AspNetCore.Http.DefaultHttpContext>
 {
     private readonly IHttpStack<HttpContext> _stack;
-    private static readonly ObjectPool<DefaultHttpContext> Pool = new DefaultObjectPool<DefaultHttpContext>(new DefaultPooledObjectPolicy<DefaultHttpContext>());
+    private static readonly ObjectPool<Microsoft.AspNetCore.Http.DefaultHttpContext> Pool = new DefaultObjectPool<Microsoft.AspNetCore.Http.DefaultHttpContext>(new DefaultPooledObjectPolicy<Microsoft.AspNetCore.Http.DefaultHttpContext>());
 
     public HttpStackApplication(IHttpStack<HttpContext> stack)
     {
         _stack = stack;
     }
 
-    public DefaultHttpContext CreateContext(IFeatureCollection contextFeatures)
+    public Microsoft.AspNetCore.Http.DefaultHttpContext CreateContext(IFeatureCollection contextFeatures)
     {
         var context = Pool.Get();
         context.Initialize(contextFeatures);
         return context;
     }
 
-    public Task ProcessRequestAsync(DefaultHttpContext context)
+    public Task ProcessRequestAsync(Microsoft.AspNetCore.Http.DefaultHttpContext context)
     {
         return _stack.ProcessRequestAsync(context).AsTask();
     }
 
-    public void DisposeContext(DefaultHttpContext context, Exception? exception)
+    public void DisposeContext(Microsoft.AspNetCore.Http.DefaultHttpContext context, Exception? exception)
     {
         context.Uninitialize();
         Pool.Return(context);

@@ -36,17 +36,7 @@ internal class HttpRequestImpl : IHttpRequest
     public void SetHttpRequest(IDictionary<string, object> env)
     {
         _env = env;
-        Method = env.GetRequired<string>(OwinConstants.RequestMethod);
-        Scheme = env.GetRequired<string>(OwinConstants.RequestScheme);
-        Protocol = env.GetRequired<string>(OwinConstants.RequestProtocol);
-        Body = env.GetRequired<Stream>(OwinConstants.RequestBody);
-        Path = env.GetRequired<string>(OwinConstants.RequestPath);
-        _headers.SetEnvironment(env.GetRequired<IDictionary<string, string[]>>(OwinConstants.RequestHeaders));
-        Host = _headers.TryGetValue("Host", out var host) ? host.ToString() : null;
-
         var query = env.GetRequired<string>(OwinConstants.RequestQueryString);
-
-        QueryString = new QueryString(query);
 
 #if NETFRAMEWORK
         // Try to reuse the existing parsed query and form data
@@ -63,6 +53,11 @@ internal class HttpRequestImpl : IHttpRequest
         {
             _query.SetQueryString(query);
         }
+
+        Query = _query;
+        Form = _formCollection;
+        Headers = _requestHeaders;
+        Cookies = _cookies;
     }
 
     public async ValueTask LoadAsync()
@@ -86,23 +81,71 @@ internal class HttpRequestImpl : IHttpRequest
         _formNameValue.Reset();
 #endif
         _cookies.Reset();
-        Form = _formCollection;
+        Form = default!;
         QueryString = default;
+        Query = default!;
+        Headers = default!;
+        Cookies = default!;
     }
 
-    public string Method { get; private set; } = null!;
-    public string Scheme { get; private set; } = null!;
-    public string? Host { get; set; }
-    public bool IsHttps => Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
-    public string Protocol { get; private set; } = null!;
-    public string? ContentType => Headers.ContentType;
-    public Stream Body { get; set; } = Stream.Null;
-    public PathString Path { get; set; }
-    public QueryString QueryString { get; set; }
-    public IReadOnlyDictionary<string, StringValues> Query => _query;
+    public string Method
+    {
+        get => _env.GetRequired<string>(OwinConstants.RequestMethod);
+        set => _env[OwinConstants.RequestMethod] = value;
+    }
 
-    public IFormCollection Form { get; private set; }
+    public string Scheme
+    {
+        get => _env.GetRequired<string>(OwinConstants.RequestScheme);
+        set => _env[OwinConstants.RequestScheme] = value;
+    }
 
-    public IRequestHeaderDictionary Headers => _requestHeaders;
-    public IRequestCookieCollection Cookies => _cookies;
+    public string? Host
+    {
+        get => _headers.TryGetValue("Host", out var host) ? host.ToString() : null;
+        set => _headers["Host"] = value;
+    }
+
+    public bool IsHttps
+    {
+        get => Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
+        set => Scheme = value ? "https" : "http";
+    }
+
+    public string Protocol
+    {
+        get => _env.GetRequired<string>(OwinConstants.RequestProtocol);
+        set => _env[OwinConstants.RequestProtocol] = value;
+    }
+
+    public string? ContentType
+    {
+        get => Headers.ContentType;
+        set => Headers.ContentType = value;
+    }
+
+    public Stream Body
+    {
+        get => _env.GetRequired<Stream>(OwinConstants.RequestBody);
+        set => _env[OwinConstants.RequestBody] = value;
+    }
+
+    public PathString Path
+    {
+        get => _env.GetRequired<string>(OwinConstants.RequestPath);
+        set => _env[OwinConstants.RequestPath] = value.Value ?? string.Empty;
+    }
+
+    public QueryString QueryString
+    {
+        get => new(_env.GetRequired<string>(OwinConstants.RequestQueryString));
+        set => _env[OwinConstants.RequestQueryString] = value.Value ?? string.Empty;
+    }
+
+    public IQueryCollection Query { get; set; } = default!;
+
+    public IFormCollection Form { get; set; }
+
+    public IRequestHeaderDictionary Headers { get; set; } = default!;
+    public IRequestCookieCollection Cookies { get; set; } = default!;
 }

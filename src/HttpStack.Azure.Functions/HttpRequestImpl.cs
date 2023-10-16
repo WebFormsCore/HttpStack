@@ -10,7 +10,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.Azure.Functions;
 
-internal class HttpRequestImpl : IHttpRequest
+internal class HttpRequestImpl : IReadOnlyHttpRequest
 {
     private HttpRequestData _requestData = null!;
     private readonly AzureHeaderDictionary _headers;
@@ -60,7 +60,7 @@ internal class HttpRequestImpl : IHttpRequest
     public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString => new(_requestData.Url.Query);
-    public IReadOnlyDictionary<string, StringValues> Query => _query;
+    public IQueryCollection Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;
     public IRequestCookieCollection Cookies => _cookies;

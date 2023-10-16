@@ -2,7 +2,7 @@
 
 namespace HttpStack.FastCGI;
 
-internal class HttpContextImpl : DefaultHttpContext<CgiContext>
+internal class HttpContextImpl : BaseHttpContext<CgiContext>
 {
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();

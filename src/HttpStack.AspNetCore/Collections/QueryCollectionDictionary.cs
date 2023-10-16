@@ -6,7 +6,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.AspNetCore.Collections;
 
-internal class QueryCollectionDictionary : IReadOnlyDictionary<string, StringValues>
+internal class QueryCollectionDictionary : HttpStack.Collections.IQueryCollection
 {
     private IQueryCollection _queryCollection = default!;
 

@@ -9,10 +9,16 @@ using Microsoft.Web.WebView2.Core;
 
 namespace HttpStack.WebView2;
 
-internal class HttpContextImpl : DefaultHttpContext<WebView2Context>
+internal class HttpContextImpl : BaseHttpContext<WebView2Context>
 {
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
+    private LazyHttpRequest _lazyRequest;
+
+    public HttpContextImpl()
+    {
+        _lazyRequest = new LazyHttpRequest(_request);
+    }
 
     protected override void SetContextCore(WebView2Context context)
     {
@@ -32,6 +38,6 @@ internal class HttpContextImpl : DefaultHttpContext<WebView2Context>
     }
 
     internal CoreWebView2WebResourceResponse CreateResponse() => _response.CreateResponse(InnerContext.WebView2);
-    public override IHttpRequest Request => _request;
+    public override IHttpRequest Request => _lazyRequest;
     public override IHttpResponse Response => _response;
 }

@@ -24,6 +24,14 @@ internal class HttpRequestImpl : IHttpRequest
         _context = env;
         Body = env.RequestStream;
 
+        Method = env.ServerVariables.TryGetValue("REQUEST_METHOD", out var method)
+            ? method
+            : "GET";
+
+        IsHttps = _context.ServerVariables.TryGetValue("HTTPS", out var https)
+            ? https.Equals("on", StringComparison.OrdinalIgnoreCase)
+            : Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
+
         Path = env.ServerVariables.TryGetValue("REQUEST_URI", out var requestUri)
             ? new PathString(requestUri)
             : PathString.Empty;
@@ -50,6 +58,11 @@ internal class HttpRequestImpl : IHttpRequest
         {
             QueryString = default;
         }
+
+        Query = _query;
+        Form = _form;
+        Headers = _context.RequestHeaders;
+        Cookies = _cookies;
     }
 
     public async ValueTask LoadAsync()
@@ -69,21 +82,31 @@ internal class HttpRequestImpl : IHttpRequest
         _query.Reset();
         _form.Reset();
         _cookies.Reset();
+
+        Query = default!;
+        Form = default!;
+        Headers = default!;
+        Cookies = default!;
     }
 
-    public string Method => _context.ServerVariables.TryGetValue("REQUEST_METHOD", out var method) ? method : "GET";
-    public string Scheme { get; private set; } = null!;
-    public string? Host { get; private set; }
-    public bool IsHttps => _context.ServerVariables.TryGetValue("HTTPS", out var https)
-        ? https.Equals("on", StringComparison.OrdinalIgnoreCase)
-        : Scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
-    public string Protocol { get; private set; } = null!;
-    public string? ContentType => Headers.ContentType;
+    public string Method { get; set; } = null!;
+    public string Scheme { get; set; } = null!;
+    public string? Host { get; set; }
+    public bool IsHttps { get; set; }
+
+    public string Protocol { get; set; } = null!;
+
+    public string? ContentType
+    {
+        get => Headers.ContentType;
+        set => Headers.ContentType = value;
+    }
+
     public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString { get; set; }
-    public IReadOnlyDictionary<string, StringValues> Query => _query;
-    public IFormCollection Form => _form;
-    public IRequestHeaderDictionary Headers => _context.RequestHeaders;
-    public IRequestCookieCollection Cookies => _cookies;
+    public IQueryCollection Query { get; set; } = default!;
+    public IFormCollection Form { get; set; } = default!;
+    public IRequestHeaderDictionary Headers { get; set; } = default!;
+    public IRequestCookieCollection Cookies { get; set; } = default!;
 }

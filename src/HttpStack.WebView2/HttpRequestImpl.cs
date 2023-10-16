@@ -12,7 +12,7 @@ using Microsoft.Web.WebView2.Core;
 
 namespace HttpStack.WebView2;
 
-internal class HttpRequestImpl : IHttpRequest
+internal class HttpRequestImpl : IReadOnlyHttpRequest
 {
     private static readonly RecyclableMemoryStreamManager Manager = new();
 
@@ -86,7 +86,7 @@ internal class HttpRequestImpl : IHttpRequest
     public Stream Body { get; set; } = Stream.Null;
     public PathString Path { get; set; }
     public QueryString QueryString { get; set; }
-    public IReadOnlyDictionary<string, StringValues> Query => _query;
+    public IQueryCollection Query => _query;
     public IFormCollection Form => _form;
     public IRequestHeaderDictionary Headers => _requestHeaders;
     public IRequestCookieCollection Cookies => _cookies;

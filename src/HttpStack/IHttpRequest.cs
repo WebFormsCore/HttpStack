@@ -5,31 +5,31 @@ using Microsoft.Extensions.Primitives;
 
 namespace HttpStack;
 
-public interface IHttpRequest
+public interface IHttpRequest : IReadOnlyHttpRequest
 {
-    string Method { get; }
+    new string Method { get; set; }
 
-    string Scheme { get; }
+    new string Scheme { get; set; }
 
-    string? Host { get; }
+    new string? Host { get; set; }
 
-    bool IsHttps { get; }
+    new bool IsHttps { get; set; }
 
-    string Protocol { get; }
+    new string Protocol { get; set; }
 
-    string? ContentType { get; }
+    new string? ContentType { get; set; }
 
-    Stream Body { get; set; }
+    new Stream Body { get; set; }
 
-    PathString Path { get; set; }
+    new PathString Path { get; set; }
 
-    QueryString QueryString { get; }
+    new QueryString QueryString { get; set; }
 
-    IReadOnlyDictionary<string, StringValues> Query { get; }
+    new IQueryCollection Query { get; set; }
 
-    IFormCollection Form { get; }
+    new IFormCollection Form { get; set; }
 
-    IRequestHeaderDictionary Headers { get; }
+    new IRequestHeaderDictionary Headers { get; set; }
 
-    IRequestCookieCollection Cookies { get; }
+    new IRequestCookieCollection Cookies { get; set; }
 }

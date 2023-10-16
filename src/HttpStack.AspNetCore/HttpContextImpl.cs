@@ -11,7 +11,7 @@ using WebSocketManager = HttpStack.Http.WebSocketManager;
 
 namespace HttpStack.AspNetCore;
 
-internal class HttpContextImpl : DefaultHttpContext<HttpContext>
+internal class HttpContextImpl : BaseHttpContext<HttpContext>
 {
     private HttpContext _httpContext = null!;
     private readonly HttpRequestImpl _request = new();

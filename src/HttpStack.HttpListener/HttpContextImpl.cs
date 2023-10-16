@@ -4,15 +4,17 @@ using HttpStack.Http;
 
 namespace HttpStack.NetHttpListener;
 
-internal class HttpContextImpl : DefaultHttpContext<HttpListenerContext>
+internal class HttpContextImpl : BaseHttpContext<HttpListenerContext>
 {
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
     private readonly WebSocketManagerImpl _webSocketManager;
+    private readonly LazyHttpRequest _lazyHttpRequest;
 
     public HttpContextImpl()
     {
         _webSocketManager = new WebSocketManagerImpl(this);
+        _lazyHttpRequest = new LazyHttpRequest(_request);
     }
 
     protected override void SetContextCore(HttpListenerContext httpContext)
@@ -34,7 +36,7 @@ internal class HttpContextImpl : DefaultHttpContext<HttpListenerContext>
         _response.Reset();
     }
 
-    public override IHttpRequest Request => _request;
+    public override IHttpRequest Request => _lazyHttpRequest;
     public override IHttpResponse Response => _response;
     public override WebSocketManager WebSockets => _webSocketManager;
 

@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Web;
+﻿using System.IO;
+using System.Linq;
 using HttpStack.AspNetCore.Collections;
 using HttpStack.Collections;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 using IFormCollection = HttpStack.Collections.IFormCollection;
-using IHeaderDictionary = HttpStack.Collections.IHeaderDictionary;
 
 namespace HttpStack.AspNetCore;
 
@@ -37,6 +34,10 @@ internal class HttpRequestImpl : IHttpRequest
         {
             _form.SetFormCollection(httpRequest.Form);
         }
+
+        Form = _form;
+        Headers = _requestHeaders;
+        Cookies = _cookies;
     }
 
     public void Reset()
@@ -46,24 +47,74 @@ internal class HttpRequestImpl : IHttpRequest
         _query.Reset();
         _headers.Reset();
         _cookies.Reset();
+        Form = null!;
+        Headers = null!;
+        Cookies = null!;
         _httpRequest = null!;
     }
 
-    public string Method => _httpRequest.Method;
-    public string Scheme => _httpRequest.Scheme;
-    public string Host => _httpRequest.Host.Value;
-    public bool IsHttps => _httpRequest.IsHttps;
-    public string Protocol => _httpRequest.Protocol;
-    public string? ContentType => _httpRequest.ContentType;
+    public string Method
+    {
+        get => _httpRequest.Method;
+        set => _httpRequest.Method = value;
+    }
+
+    public string Scheme
+    {
+        get => _httpRequest.Scheme;
+        set => _httpRequest.Scheme = value;
+    }
+
+    public string? Host
+    {
+        get => _httpRequest.Host.Value;
+        set => _httpRequest.Host = value is null ? default : new HostString(value);
+    }
+
+    public bool IsHttps
+    {
+        get => _httpRequest.IsHttps;
+        set => _httpRequest.IsHttps = value;
+    }
+
+    public string Protocol
+    {
+        get => _httpRequest.Protocol;
+        set => _httpRequest.Protocol = value;
+    }
+
+    public string? ContentType
+    {
+        get => _httpRequest.ContentType;
+        set => _httpRequest.ContentType = value;
+    }
+
     public Stream Body
     {
         get => _httpRequest.Body;
         set => _httpRequest.Body = value;
     }
     public PathString Path { get; set; }
-    public QueryString QueryString => new(_httpRequest.QueryString.Value);
-    public IReadOnlyDictionary<string, StringValues> Query => _query;
-    public IFormCollection Form => _form;
-    public IRequestHeaderDictionary Headers => _requestHeaders;
-    public IRequestCookieCollection Cookies => _cookies;
+
+    public QueryString QueryString
+    {
+        get => new(_httpRequest.QueryString.Value);
+        set => _httpRequest.QueryString = new Microsoft.AspNetCore.Http.QueryString(value.Value);
+    }
+
+    public HttpStack.Collections.IQueryCollection Query
+    {
+        get => _query;
+        set
+        {
+            _httpRequest.Query = new Microsoft.AspNetCore.Http.QueryCollection(value.ToDictionary(x => x.Key, x => x.Value));
+            _query.SetQueryCollection(_httpRequest.Query);
+        }
+    }
+
+    public IFormCollection Form { get; set; } = default!;
+
+    public IRequestHeaderDictionary Headers { get; set; } = default!;
+
+    public IRequestCookieCollection Cookies { get; set; } = default!;
 }

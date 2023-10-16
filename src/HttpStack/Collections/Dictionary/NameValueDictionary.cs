@@ -7,7 +7,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.Collections;
 
-public class NameValueDictionary : IDictionary<string, StringValues>, IReadOnlyDictionary<string, StringValues>
+public class NameValueDictionary : IDictionary<string, StringValues>, IQueryCollection
 {
     private NameValueCollection? _nameValueCollection;
 
