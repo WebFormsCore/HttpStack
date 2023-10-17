@@ -4,7 +4,7 @@ using System.Web;
 
 namespace HttpStack.AspNet.Collections;
 
-public class RequestCookiesImpl : IRequestCookieCollection
+internal class RequestCookiesImpl : IRequestCookieCollection
 {
     private HttpCookieCollection _httpCookieCollection = null!;
 

@@ -22,6 +22,7 @@ internal class HttpRequestImpl : IHttpRequest
     private readonly DefaultRequestCookieCollection _cookies;
 #if NETFRAMEWORK
     private readonly NameValueFormCollection _formNameValue = new();
+    private readonly OwinFormFileCollection _formFiles = new();
 #endif
 
     public HttpRequestImpl()
@@ -43,8 +44,9 @@ internal class HttpRequestImpl : IHttpRequest
         if (env.TryGetValue("System.Web.HttpContextBase", out var value) && value is HttpContextBase httpContext)
         {
             _query.SetNameValueCollection(httpContext.Request.QueryString);
+            _formFiles.SetHttpFileCollection(httpContext.Request.Files);
             _formNameValue.SetNameValueCollection(httpContext.Request.Form);
-            _formNameValue.SetHttpFileCollection(httpContext.Request.Files);
+            _formNameValue.SetFormFileCollection(_formFiles);
             Form = _formNameValue;
             return;
         }
@@ -79,6 +81,7 @@ internal class HttpRequestImpl : IHttpRequest
         _formCollection.Reset();
 #if NETFRAMEWORK
         _formNameValue.Reset();
+        _formFiles.Reset();
 #endif
         _cookies.Reset();
         Form = default!;

@@ -5,7 +5,7 @@ using HttpStack.Collections;
 
 namespace HttpStack.AspNetCore.Collections;
 
-public class FeatureCollectionImpl : IFeatureCollection
+internal class FeatureCollectionImpl : IFeatureCollection
 {
     private Microsoft.AspNetCore.Http.Features.IFeatureCollection _collection = null!;
 

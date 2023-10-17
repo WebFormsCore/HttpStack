@@ -6,7 +6,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.Azure.Functions.Collections;
 
-public class AzureHeaderDictionary : BaseHeaderDictionary
+internal class AzureHeaderDictionary : BaseHeaderDictionary
 {
     private HttpHeadersCollection _header = null!;
 

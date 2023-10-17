@@ -5,7 +5,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.AspNetCore.Collections;
 
-public class HeaderCollectionImpl : IHeaderDictionary
+internal class HeaderCollectionImpl : IHeaderDictionary
 {
     private Microsoft.AspNetCore.Http.IHeaderDictionary _headerDictionary = null!;
 

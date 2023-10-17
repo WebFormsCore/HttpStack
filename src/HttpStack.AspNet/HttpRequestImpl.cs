@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Web;
 using HttpStack.AspNet.Collections;
 using HttpStack.Collections;
-using Microsoft.Extensions.Primitives;
 
 namespace HttpStack.AspNet;
 
 internal class HttpRequestImpl : IReadOnlyHttpRequest
 {
     private HttpRequest _httpRequest = null!;
+    private readonly AspNetCoreFormFileCollection _formFiles = new();
     private readonly NameValueFormCollection _form = new();
     private readonly NameValueDictionary _query = new();
     private readonly NameValueHeaderDictionary _headers;
@@ -33,6 +32,7 @@ internal class HttpRequestImpl : IReadOnlyHttpRequest
     {
         Path = PathString.Empty;
         Body = Stream.Null;
+        _formFiles.Reset();
         _form.Reset();
         _query.Reset();
         _headers.Reset();
@@ -62,7 +62,8 @@ internal class HttpRequestImpl : IReadOnlyHttpRequest
     {
         get
         {
-            _form.SetHttpFileCollection(_httpRequest.Files);
+            _formFiles.SetHttpFileCollection(_httpRequest.Files);
+            _form.SetFormFileCollection(_formFiles);
             _form.SetNameValueCollection(_httpRequest.Form);
             return _form;
         }

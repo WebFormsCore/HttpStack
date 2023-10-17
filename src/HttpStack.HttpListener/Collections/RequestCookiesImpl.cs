@@ -6,7 +6,7 @@ using System.Net;
 
 namespace HttpStack.NetHttpListener.Collections;
 
-public class RequestCookiesImpl : IRequestCookieCollection
+internal class RequestCookiesImpl : IRequestCookieCollection
 {
     private CookieCollection _cookieCollection = null!;
     private readonly KeyCollection _keys;

@@ -5,7 +5,7 @@ using HttpStack.Collections;
 
 namespace HttpStack.AspNet;
 
-public class HttpResponseImpl : IHttpResponse
+internal class HttpResponseImpl : IHttpResponse
 {
     private HttpResponse _httpResponse = null!;
     private readonly NameValueHeaderDictionary _headers;

@@ -10,7 +10,7 @@ using Microsoft.IO;
 
 namespace HttpStack.Forms;
 
-public ref struct MultipartFormParser
+internal ref struct MultipartFormParser
 {
     private static readonly RecyclableMemoryStreamManager Manager = new();
 

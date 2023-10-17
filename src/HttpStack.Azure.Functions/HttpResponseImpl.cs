@@ -7,7 +7,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HttpStack.Azure.Functions;
 
-public class HttpResponseImpl : IHttpResponse
+internal class HttpResponseImpl : IHttpResponse
 {
     private HttpResponseData _responseData = null!;
     private readonly AzureHeaderDictionary _headers;

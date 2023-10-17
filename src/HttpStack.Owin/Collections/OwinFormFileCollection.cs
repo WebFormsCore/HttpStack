@@ -10,7 +10,7 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace HttpStack.Owin.Collections;
 
-public class FormFileCollection : IFormFileCollection
+internal class OwinFormFileCollection : IFormFileCollection
 {
     private static readonly ObjectPool<FormFile> FormFilePool = new DefaultObjectPool<FormFile>(new DefaultPooledObjectPolicy<FormFile>());
     private HttpFileCollectionBase? _formCollection;

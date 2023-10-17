@@ -4,7 +4,7 @@ using HttpStack.FastCGI.Handlers;
 
 namespace HttpStack.FastCGI;
 
-public class HttpResponseImpl : IHttpResponse
+internal class HttpResponseImpl : IHttpResponse
 {
     private CgiContext _context = null!;
     private readonly DefaultResponseCookies _cookies;

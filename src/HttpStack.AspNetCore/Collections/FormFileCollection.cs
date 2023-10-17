@@ -9,7 +9,7 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace HttpStack.AspNetCore.Collections;
 
-public class FormFileCollection : IFormFileCollection
+internal class FormFileCollection : IFormFileCollection
 {
     private static readonly ObjectPool<FormFile> FormFilePool = new DefaultObjectPool<FormFile>(new DefaultPooledObjectPolicy<FormFile>());
     private Microsoft.AspNetCore.Http.IFormFileCollection? _formCollection;

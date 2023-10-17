@@ -13,7 +13,7 @@ internal class HttpContextImpl : BaseHttpContext<WebView2Context>
 {
     private readonly HttpRequestImpl _request = new();
     private readonly HttpResponseImpl _response = new();
-    private LazyHttpRequest _lazyRequest;
+    private readonly LazyHttpRequest _lazyRequest;
 
     public HttpContextImpl()
     {

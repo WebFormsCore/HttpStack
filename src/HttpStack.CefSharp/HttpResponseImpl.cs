@@ -6,7 +6,7 @@ using HttpStack.Streaming;
 
 namespace HttpStack.CefSharp;
 
-public class HttpResponseImpl : IHttpResponse
+internal class HttpResponseImpl : IHttpResponse
 {
     private ResourceHandler _resourceHandler = null!;
     private readonly WatchableStream _stream = new();

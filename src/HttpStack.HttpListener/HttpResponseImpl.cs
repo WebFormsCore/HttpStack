@@ -7,7 +7,7 @@ using HttpStack.Streaming;
 
 namespace HttpStack.NetHttpListener;
 
-public class HttpResponseImpl : IHttpResponse
+internal class HttpResponseImpl : IHttpResponse
 {
     private HttpListenerResponse _httpResponse = null!;
     private readonly WatchableStream _body = new();

@@ -9,7 +9,7 @@ using HttpStack.Streaming;
 
 namespace HttpStack.Owin;
 
-public class HttpResponseImpl : IHttpResponse
+internal class HttpResponseImpl : IHttpResponse
 {
     private IDictionary<string, object> _env = null!;
     private readonly OwinHeaderDictionary _headers;

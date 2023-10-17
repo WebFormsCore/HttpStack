@@ -8,7 +8,7 @@ using Microsoft.Web.WebView2.Core;
 
 namespace HttpStack.WebView2;
 
-public class HttpResponseImpl : IHttpResponse
+internal class HttpResponseImpl : IHttpResponse
 {
     private static readonly RecyclableMemoryStreamManager Manager = new();
 

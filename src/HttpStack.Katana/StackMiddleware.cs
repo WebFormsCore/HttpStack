@@ -9,7 +9,7 @@ namespace HttpStack.Katana;
 
 using AppFunc = Func<IDictionary<string, object>, Task>;
 
-public class StackMiddleware
+internal class StackMiddleware
 {
     private readonly IHttpStack<IDictionary<string, object>> _stack;
 
