@@ -11,6 +11,15 @@ public class NameValueDictionary : IDictionary<string, StringValues>, IQueryColl
 {
     private NameValueCollection? _nameValueCollection;
 
+    public NameValueDictionary()
+    {
+    }
+
+    public NameValueDictionary(NameValueCollection nameValueCollection)
+    {
+        _nameValueCollection = nameValueCollection;
+    }
+
     public void SetQueryString(string query)
     {
         NameValueCollection = HttpUtility.ParseQueryString(query);
