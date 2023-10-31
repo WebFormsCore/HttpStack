@@ -12,7 +12,7 @@
         <ExtensionsVersion>6.0.0</ExtensionsVersion>
         <NoWarn>$(NoWarn);CS0436;CS9057;ASP0000;NU5128</NoWarn>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsNotAsErrors>NU1904</WarningsNotAsErrors>
+        <WarningsNotAsErrors>NU1904;NU1903</WarningsNotAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(TargetFramework) == 'net8.0'">
