@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Project</AssemblyName>
+        <TargetFramework>net8.0</TargetFramework>
+        <WebFormsCoreUseNuget>false</WebFormsCoreUseNuget>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PublishTrimmed>true</PublishTrimmed>
+        <SelfContained>true</SelfContained>
+        <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+        <NativeLib>Shared</NativeLib>
+        <MSBuildEnableWorkloadResolver>false</MSBuildEnableWorkloadResolver>
+        <EmitLegacyAssetsFileItems>true</EmitLegacyAssetsFileItems>
+        <TargetArchitecture>wasm</TargetArchitecture>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <IlcTrimMetadata>true</IlcTrimMetadata>
+        <EmccExtraArgs>-s EXPORTED_RUNTIME_METHODS=cwrap -s ENVIRONMENT=webview -s EXPORT_ES6=1 -s ASSERTIONS=0</EmccExtraArgs>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.DotNet.ILCompiler.LLVM" Version="8.0.0-*" />
+        <PackageReference Include="runtime.win-x64.Microsoft.DotNet.ILCompiler.LLVM" Version="8.0.0-*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\HttpStack.Builder\HttpStack.Builder.csproj" />
+      <ProjectReference Include="..\..\src\HttpStack.Wasm.LLVM\HttpStack.Wasm.LLVM.csproj" />
+    </ItemGroup>
+</Project>

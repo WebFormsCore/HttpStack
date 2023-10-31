@@ -62,6 +62,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.Extensions.WebSocketTime", "examples\HttpStack.Examples.Extensions.WebSocketTime\HttpStack.Examples.Extensions.WebSocketTime.csproj", "{4B5665EB-6D9D-4F20-B9C3-F24C4F083CAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Wasm.LLVM", "src\HttpStack.Wasm.LLVM\HttpStack.Wasm.LLVM.csproj", "{2F71B9EE-D1D2-450A-8688-A7003BF13206}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpStack.Examples.Wasm.LLVM", "examples\HttpStack.Examples.Wasm.LLVM\HttpStack.Examples.Wasm.LLVM.csproj", "{49A67577-ED04-40A5-AD01-96BA960B63A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +164,14 @@ Global
 		{4B5665EB-6D9D-4F20-B9C3-F24C4F083CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B5665EB-6D9D-4F20-B9C3-F24C4F083CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B5665EB-6D9D-4F20-B9C3-F24C4F083CAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F71B9EE-D1D2-450A-8688-A7003BF13206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F71B9EE-D1D2-450A-8688-A7003BF13206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F71B9EE-D1D2-450A-8688-A7003BF13206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F71B9EE-D1D2-450A-8688-A7003BF13206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49A67577-ED04-40A5-AD01-96BA960B63A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49A67577-ED04-40A5-AD01-96BA960B63A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49A67577-ED04-40A5-AD01-96BA960B63A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49A67577-ED04-40A5-AD01-96BA960B63A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -186,6 +198,8 @@ Global
 		{B18684F4-7897-4390-A77C-BAD59B2BD408} = {66F54A64-300A-4C72-9781-F6C2400E9001}
 		{EDC17383-FA5E-42EB-823A-A0DCBB41C0D8} = {66F54A64-300A-4C72-9781-F6C2400E9001}
 		{4B5665EB-6D9D-4F20-B9C3-F24C4F083CAE} = {EDC17383-FA5E-42EB-823A-A0DCBB41C0D8}
+		{2F71B9EE-D1D2-450A-8688-A7003BF13206} = {F3CFA199-3681-459B-A605-3C0D28DE8DCE}
+		{49A67577-ED04-40A5-AD01-96BA960B63A2} = {66F54A64-300A-4C72-9781-F6C2400E9001}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFBD2C9D-A470-49E5-8643-13FED48E5958}

@@ -9,6 +9,15 @@ public class WatchableStream : Stream
 {
     private Stream _stream = null!;
 
+    public WatchableStream()
+    {
+    }
+
+    public WatchableStream(Stream stream)
+    {
+        _stream = stream;
+    }
+
     public bool DidWrite { get; private set; }
 
     private void MarkAsWrittenCore()
