@@ -45,3 +45,4 @@ jobs:
             src/HttpStack.StaticFiles/HttpStack.StaticFiles.csproj
             src/HttpStack.Azure.Functions/HttpStack.Azure.Functions.csproj
             src/HttpStack.WebView2/HttpStack.WebView2.csproj
+            src/HttpStack.Wasm.LLVM/HttpStack.Wasm.LLVM.csproj
