@@ -16,7 +16,7 @@ internal class HttpContextImpl : BaseHttpContext<WasmContext>
         _request.SetHttpRequest(context);
         _response.SetHeaders();
         context.Response = _response.ResponseContext;
-        context.Stream = _response.Stream;
+        context.Stream = _response.MemoryStream;
     }
 
     protected override void ResetCore()

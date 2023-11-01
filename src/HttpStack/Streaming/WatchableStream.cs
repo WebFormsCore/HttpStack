@@ -57,9 +57,9 @@ public class WatchableStream : Stream
         }
     }
 
-    public void Reset()
+    public void Reset(Stream? stream = null)
     {
-        _stream = null!;
+        _stream = stream!;
         DidWrite = false;
     }
 

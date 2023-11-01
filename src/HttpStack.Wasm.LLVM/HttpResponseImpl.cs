@@ -14,15 +14,15 @@ internal class HttpResponseImpl : IHttpResponse
 
     public HttpResponseImpl()
     {
-        Stream = new MemoryStream();
-        _watchableStream = new WatchableStream(Stream);
+        MemoryStream = new MemoryStream();
+        _watchableStream = new WatchableStream(MemoryStream);
         _cookies = new DefaultResponseCookies(this);
         _headers = new HeaderDictionary();
         _responseHeaders = new ResponseHeaderDictionary(_headers);
         Body = _watchableStream;
     }
 
-    public MemoryStream Stream { get; }
+    public MemoryStream MemoryStream { get; }
 
     public ResponseContext ResponseContext { get; } = new();
 
@@ -40,8 +40,10 @@ internal class HttpResponseImpl : IHttpResponse
         ResponseContext.Status = 200;
 
         _cookies.Reset();
+        MemoryStream.SetLength(0);
+
+        _watchableStream.Reset(MemoryStream);
         Body = _watchableStream;
-        Stream.SetLength(0);
     }
 
     public int StatusCode

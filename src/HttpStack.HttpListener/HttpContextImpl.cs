@@ -33,6 +33,7 @@ internal class HttpContextImpl : BaseHttpContext<HttpListenerContext>
     {
         _webSocketManager.Reset();
         _request.Reset();
+        _lazyHttpRequest.Reset();
         _response.Reset();
     }
 
