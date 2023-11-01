@@ -1,4 +1,5 @@
 ﻿using System.Buffers.Binary;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
@@ -48,7 +49,8 @@ public static class WasmInterop
 
 		await Stack.ExecuteAsync(httpContext);
 
-		var pointer = Alloc(context.Stream, context.Response);
+		var response = Unsafe.As<HttpResponseImpl>(httpContext.Context.Response);
+		var pointer = Alloc(response.MemoryStream, response.GetResponseContext());
 
 		await Stack.DisposeAsync(httpContext);
 

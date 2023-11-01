@@ -7,6 +7,7 @@ namespace HttpStack.Wasm;
 
 internal class HttpResponseImpl : IHttpResponse
 {
+    private readonly ResponseContext _responseContext = new();
     private readonly WatchableStream _watchableStream;
     private readonly HeaderDictionary _headers;
     private readonly ResponseHeaderDictionary _responseHeaders;
@@ -24,21 +25,22 @@ internal class HttpResponseImpl : IHttpResponse
 
     public MemoryStream MemoryStream { get; }
 
-    public ResponseContext ResponseContext { get; } = new();
-
-    public void SetHeaders()
+    public ResponseContext GetResponseContext()
     {
         foreach (var header in _headers)
         {
-            ResponseContext.Headers[header.Key] = header.Value.ToString();
+            _responseContext.Headers[header.Key] = header.Value.ToString();
         }
+
+        return _responseContext;
     }
 
     public void Reset()
     {
-        ResponseContext.Headers.Clear();
-        ResponseContext.Status = 200;
+        _responseContext.Status = 200;
+        _responseContext.Headers.Clear();
 
+        _headers.Clear();
         _cookies.Reset();
         MemoryStream.SetLength(0);
 
@@ -48,8 +50,8 @@ internal class HttpResponseImpl : IHttpResponse
 
     public int StatusCode
     {
-        get => ResponseContext.Status;
-        set => ResponseContext.Status = value;
+        get => _responseContext.Status;
+        set => _responseContext.Status = value;
     }
 
     public IResponseCookies Cookies => _cookies;

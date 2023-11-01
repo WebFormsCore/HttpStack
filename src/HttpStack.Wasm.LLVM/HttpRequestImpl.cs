@@ -7,7 +7,7 @@ namespace HttpStack.Wasm;
 
 internal class HttpRequestImpl : IReadOnlyHttpRequest
 {
-    private WasmContext _context = null!;
+    private WasmContext _context;
     private readonly NameValueDictionary _query = new();
     private readonly HeaderDictionary _headers;
     private readonly RequestHeaderDictionary _requestHeaders;
@@ -54,7 +54,7 @@ internal class HttpRequestImpl : IReadOnlyHttpRequest
         _query.Reset();
         _headers.Clear();
         QueryString = default;
-        _context = null!;
+        _context = default;
         Scheme = "http";
         Host = null;
         _cookies.Reset();

@@ -3,7 +3,7 @@ using HttpStack.Wasm.Context;
 
 namespace HttpStack.Wasm;
 
-internal class WasmContext
+internal struct WasmContext
 {
 	public WasmContext(RequestContext request, Stream requestBody, IFormCollection form)
 	{
@@ -17,8 +17,4 @@ internal class WasmContext
 	public Stream RequestBody { get; }
 
 	public IFormCollection Form { get; }
-
-	public ResponseContext Response { get; set; } = null!;
-
-	public MemoryStream Stream { get; set; } = null!;
 }
