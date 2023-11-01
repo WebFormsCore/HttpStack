@@ -138,9 +138,13 @@ public class HttpApplicationBuilder : IHttpApplicationBuilder, IServiceProviderF
     IHostEnvironment IHttpApplicationBuilder.Environment => Environment;
 
 #if NET8_0_OR_GREATER
+    private Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder? _metricsBuilder;
+
     IHostEnvironment IHostApplicationBuilder.Environment => Environment;
 
     IConfigurationManager IHostApplicationBuilder.Configuration => Configuration;
+
+    Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder IHostApplicationBuilder.Metrics => _metricsBuilder ??= new MetricsBuilder(Services);
 #endif
 
     IServiceCollection IServiceProviderFactory<IServiceCollection>.CreateBuilder(IServiceCollection services)
