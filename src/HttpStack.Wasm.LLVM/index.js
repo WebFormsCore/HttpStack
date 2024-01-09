@@ -49,11 +49,22 @@ function load() {
                 const responseBody = memory.subarray(offset, offset + responseBodyLength);
                 offset += responseBodyLength;
 
+                let done = false;
+                const responseStream = new ReadableStream({
+                    start(controller) {
+                        if (done) {
+                            controller.close();
+                            endRequest(ptr);
+                        } else {
+                            controller.enqueue(responseBody);
+                            done = true;
+                        }
+                    }
+                });
+
                 const responseContext = JSON.parse(decoder.decode(memory.subarray(offset, offset + responseLength)));
 
-                endRequest(ptr);
-
-                return { body: responseBody, response: responseContext };
+                return { body: responseStream, response: responseContext };
             }
 
             resolve(processRequest);
