@@ -17,7 +17,7 @@ public static class FormCollectionExtensions
 
     public static async Task LoadAsync(this FormCollection collection, string method, string? contentType, Stream stream)
     {
-        if (method is not ("GET" or "OPTIONS") || contentType is null)
+        if (method is "TRACE" or "GET" or "OPTIONS" || contentType is null)
         {
             return;
         }
